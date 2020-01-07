@@ -1,7 +1,7 @@
 const connection = require('../configs/db')
 
 module.exports = {
-    getCountAll: () => {
+    getProductCount: () => {
         return new Promise ((resolve, reject) => {
             const query = `SELECT COUNT(*) total from products`
             connection.query(query, (error, result) => {
@@ -13,7 +13,7 @@ module.exports = {
             })
         })
     },
-    all: (offset, limit, sort, sortBy, search) => {
+    getAll: (offset, limit, sort, sortBy, search) => {
         return new Promise((resolve, reject) => {
             const query = `SELECT a.*
             FROM products a
@@ -28,4 +28,43 @@ module.exports = {
             })
         })
     },
+    addCart: (unit_price, qty, total, product_id, user_id) => {
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO cart (unit_price, qty, total, product_id, user_id) VALUES ('${unit_price}', '${qty}', '${total}', '${product_id}', '${user_id}')`
+            connection.query(query, (error, result) => {
+                if (error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    addProduct: (name, unit, price, stock, description, category_id, user_id) => {
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO products (name, unit, price, stock, description, category_id, user_id)
+            VALUES ('${name}', '${unit}', '${price}', '${stock}', '${description}', '${category_id}', '${user_id}')`
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                }
+                else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    addProductPhoto: (product_id, photo) => {
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO photo_product (photo, product_id) VALUES ('${photo}', '${product_id}')`
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                }
+                else {
+                    resolve(result)
+                }
+            })
+        })
+    }
 }
