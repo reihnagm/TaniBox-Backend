@@ -32,10 +32,12 @@ module.exports = {
     },
 
     getSingleProduct: async (request, response) => {
+
         const product_id = request.body.product_id
+
         try {
-            const response = await Product.getSingleProduct(product_id)
-            response.json(response)
+            const data = await Product.getSingleProduct(product_id)
+            response.json(datas)
         } catch(error) {
             console.error(error)
             response.status(500).json('Server Error')
