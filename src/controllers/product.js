@@ -31,7 +31,7 @@ module.exports = {
 
     },
 
-    getSingleProduct: async (request, reponse) => {
+    getSingleProduct: async (request, response) => {
         const product_id = request.body.product_id
         try {
             const response = await Product.getSingleProduct(product_id)
