@@ -291,4 +291,175 @@ module.exports = {
         }
     },
 
+    uploadBuyer: async (request, response, next) => {
+        let error = false
+        if(request) {
+            if(request.file) {
+
+                if(request.file.size >= 5242880) {
+                    const message = 'Oops!, Size cannot more than 5MB'
+                     response.json(message)
+                     error = true
+                    fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
+                        if (error) response.json(error)
+                    })
+                }
+
+                const file = request.file.filename
+                const extension = file.split('.')
+                const filename = extension[extension.length - 1]
+
+                if(!isImage(filename)) {
+                    const message = 'Oops!, File allowed only JPG, JPEG, PNG, GIF, SVG'
+                    response.json(message)
+                    error = true
+                    fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
+                        if (error) response.json(error)
+                    })
+                }
+
+                function isImage(filename) {
+                    switch (filename) {
+                        case 'jpg':
+                        case 'jpeg':
+                        case 'png':
+                        case 'gif':
+                        case 'svg':
+                            return true
+                        }
+                        return false
+                }
+            }
+        }
+
+        const user_id = request.body.user_id
+        const photo = request.file.filename
+        console.log(photo);
+
+        try {
+            if(error === false) {
+                await Profile.uploadBuyer(photo, user_id)
+                response.status(200).json('Upload Success')
+            }
+        } catch(error) {
+            console.error(error)
+            response.status(500).send('Server Errror')
+        }
+
+    },
+
+    uploadSeller: async (request, response, next) => {
+        let error = false
+        if(request) {
+            if(request.file) {
+
+                if(request.file.size >= 5242880) {
+                    const message = 'Oops!, Size cannot more than 5MB'
+                     response.json(message)
+                     error = true
+                    fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
+                        if (error) response.json(error)
+                    })
+                }
+
+                const file = request.file.filename
+                const extension = file.split('.')
+                const filename = extension[extension.length - 1]
+
+                if(!isImage(filename)) {
+                    const message = 'Oops!, File allowed only JPG, JPEG, PNG, GIF, SVG'
+                    response.json(message)
+                    error = true
+                    fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
+                        if (error) response.json(error)
+                    })
+                }
+
+                function isImage(filename) {
+                    switch (filename) {
+                        case 'jpg':
+                        case 'jpeg':
+                        case 'png':
+                        case 'gif':
+                        case 'svg':
+                            return true
+                        }
+                        return false
+                }
+            }
+        }
+
+        const user_id = request.body.user_id
+        const photo = request.file.filename
+        console.log(photo);
+
+        try {
+            if(error === false) {
+                await Profile.uploadSeller(photo, user_id)
+                response.status(200).json('Upload Success')
+            }
+        } catch(error) {
+            console.error(error)
+            response.status(500).send('Server Errror')
+        }
+
+    },
+
+    uploadStore: async (request, response, next) => {
+        let error = false
+        if(request) {
+            if(request.file) {
+
+                if(request.file.size >= 5242880) {
+                    const message = 'Oops!, Size cannot more than 5MB'
+                     response.json(message)
+                     error = true
+                    fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
+                        if (error) response.json(error)
+                    })
+                }
+
+                const file = request.file.filename
+                const extension = file.split('.')
+                const filename = extension[extension.length - 1]
+
+                if(!isImage(filename)) {
+                    const message = 'Oops!, File allowed only JPG, JPEG, PNG, GIF, SVG'
+                    response.json(message)
+                    error = true
+                    fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
+                        if (error) response.json(error)
+                    })
+                }
+
+                function isImage(filename) {
+                    switch (filename) {
+                        case 'jpg':
+                        case 'jpeg':
+                        case 'png':
+                        case 'gif':
+                        case 'svg':
+                            return true
+                        }
+                        return false
+                }
+            }
+        }
+
+        const user_id = request.body.user_id
+        const photo = request.file.filename
+        console.log(photo);
+
+        try {
+            if(error === false) {
+                await Profile.uploadStore(photo, user_id)
+                response.status(200).json('Upload Success')
+            }
+        } catch(error) {
+            console.error(error)
+            response.status(500).send('Server Errror')
+        }
+
+    },
+
 }
