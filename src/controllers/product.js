@@ -37,7 +37,7 @@ module.exports = {
 
         try {
             const data = await Product.getSingleProduct(product_id)
-            response.json(datas)
+            response.json(data)
         } catch(error) {
             console.error(error)
             response.status(500).json('Server Error')
