@@ -21,9 +21,11 @@ Route.get('/', Product.getAll)
      .get('/wishlist', Product.getWishlist)
      .post('/', upload.single('photo'), Product.addProduct)
      .patch('/update-product', upload.single('photo'), Product.updateProduct)
+     .patch('/update-cart', Product.updateCart)
      .post('/add-cart', Product.addCart)
      .post('/wishlist', Product.addWishlist)
      .delete('/delete-product', Product.deleteProduct)
      .delete('/delete-wishlist', Product.deleteWishlist)
+     .delete('/delete-cart', Product.deleteCart)
 
 module.exports = Route

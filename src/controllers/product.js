@@ -246,6 +246,47 @@ module.exports = {
         }
 
     },
+
+    deleteCart: async (request, response) => {
+
+        const cart_id = request.body.cart_id
+
+        try {
+            await Product.deleteCart(cart_id)
+            misc.response(response, 200, false, 'Successfull delete cart')
+        } catch(error) {
+            console.error(error)
+            misc.response(response, 500, true, 'Server error')
+        }
+
+    },
+
+    updateCart: async (request, response) => {
+
+        const cart_id = request.body.cart_id
+        const product_id = request.body.product_id
+        const user_id = request.body.user_id
+        const qty = request.body.qty
+        const unit_price = request.body.unit_price
+        const total = qty * unit_price
+
+        try {
+            await Product.updateCart(cart_id, unit_price, qty, total, product_id, user_id)
+
+            const data = {
+                cart_id,
+                qty,
+                unit_price,
+                total
+            }
+
+            misc.response(response, 200, false, 'Successfull update cart', data)
+        } catch (error) {
+            misc.response(response, 500, true, 'Server error')
+        }
+
+    },
+
     getWishlist: async (request, response) => {
         try {
             await Product.getWishlist()

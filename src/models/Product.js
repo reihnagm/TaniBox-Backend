@@ -113,6 +113,36 @@ module.exports = {
             })
         })
     },
+    deleteCart: (cart_id) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM cart WHERE id = '${cart_id}'`
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    updateCart: (cart_id, unit_price, qty, total, product_id, user_id) => {
+        return new Promise((resolve, reject) => {
+            const query =  `UPDATE cart SET
+                            unit_price = '${unit_price}',
+                            qty = '${qty}',
+                            total = '${total}'
+                            product_id = '${product_id}'
+                            user_id = '${user_id}'
+                            WHERE id = '${cart_id}'`
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
     addWishlist: (product_id, user_id) => {
         return new Promise((resolve, reject) => {
             const query = `INSERT INTO wishlist (product_id, user_id)
@@ -129,7 +159,7 @@ module.exports = {
     },
     getWishlist: () => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT a.*, b.* FROM products a 
+            const query = `SELECT a.*, b.* FROM products a
             INNER JOIN wishlist b ON a.id = b.product_id AND a.user_id  = b.user_id`
             connection.query(query, (error, result) => {
                 if(error) {
