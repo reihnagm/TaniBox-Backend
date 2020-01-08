@@ -28,7 +28,7 @@ module.exports = {
             })
         })
     },
-    getSingleProduct: () => {
+    getSingleProduct: (product_id) => {
         return new Promise((resolve, reject) => {
             const query = `SELECT * FROM products WHERE id = '${product_id}'`
             connection.query(query, (error, result) => {
