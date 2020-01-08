@@ -28,30 +28,6 @@ module.exports = {
             })
         })
     },
-    getSingleProduct: (product_id) => {
-        return new Promise((resolve, reject) => {
-            const query = `SELECT * FROM products WHERE id = '${product_id}'`
-            connection.query(query, (error, result) => {
-                if(error) {
-                    reject(new Error(error))
-                } else {
-                    resolve(result)
-                }
-            })
-        })
-    },
-    addCart: (unit_price, qty, total, product_id, user_id) => {
-        return new Promise((resolve, reject) => {
-            const query = `INSERT INTO cart (unit_price, qty, total, product_id, user_id) VALUES ('${unit_price}', '${qty}', '${total}', '${product_id}', '${user_id}')`
-            connection.query(query, (error, result) => {
-                if (error) {
-                    reject(new Error(error))
-                } else {
-                    resolve(result)
-                }
-            })
-        })
-    },
     addProduct: (name, unit, price, stock, description, category_id, user_id) => {
         return new Promise((resolve, reject) => {
             const query = `INSERT INTO products (name, unit, price, stock, description, category_id, user_id)
@@ -75,6 +51,63 @@ module.exports = {
                     reject(new Error(error))
                 }
                 else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    updateProduct: (product_id, name, unit, price, stock, description, category_id, user_id) => {
+        return new Promise((resolve, reject) => {
+            const query =  `UPDATE products SET
+            name = '${name}',
+            unit = '${unit}',
+            price = '${price}',
+            stock = '${stock}',
+            description = '${description}',
+            category_id = '${category_id}',
+            user_id = '${user_id}',
+            WHERE id = '${product_id}'`
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                }
+                else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    getSingleProduct: (product_id) => {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT * FROM products WHERE id = '${product_id}'`
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    deleteProduct: (product_id) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM products WHERE id = '${product_id}'`
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    addCart: (unit_price, qty, total, product_id, user_id) => {
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO cart (unit_price, qty, total, product_id, user_id) VALUES ('${unit_price}', '${qty}', '${total}', '${product_id}', '${user_id}')`
+            connection.query(query, (error, result) => {
+                if (error) {
+                    reject(new Error(error))
+                } else {
                     resolve(result)
                 }
             })

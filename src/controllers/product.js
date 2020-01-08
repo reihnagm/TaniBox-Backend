@@ -1,5 +1,6 @@
 const Product = require('../models/Product')
 const fs = require('fs-extra')
+const misc = require('../helper/misc')
 
 module.exports = {
 
@@ -42,6 +43,7 @@ module.exports = {
             console.error(error)
             response.status(500).json('Server Error')
         }
+
     },
 
     addProduct: async (request, response) => {
@@ -114,14 +116,108 @@ module.exports = {
                     photo
                 }
 
+                misc.response(response_addProduct, 200, false, 'Successfull create', data)
+            }
+        } catch(error) {
+            console.error(error)
+            misc.response(error, 500, true, 'Server Error')
+        }
+
+    },
+
+    updateProduct: async (request, response) => {
+
+        let error = false
+
+        if(request) {
+            if(request.file) {
+
+                if(request.file.size >= 5242880) {
+                    const message = 'Oops!, Size cannot more than 5MB'
+                    response.json(message)
+                    error = true
+                    fs.unlink(`public/images/products/${request.file.originalname}`, function(error) {
+                        if (error) response.json(error)
+                    })
+                }
+
+                const file = request.file.originalname
+                const extension = file.split('.')
+                const filename = extension[extension.length - 1]
+
+                if(!isImage(filename)) {
+                    const message = 'Oops!, File allowed only JPG, JPEG, PNG, GIF, SVG'
+                    response.json(message)
+                    error = true
+                    fs.unlink(`public/images/products/${request.file.originalname}`, function(error) {
+                        if (error) response.json(error)
+                    })
+                }
+
+                function isImage(filename) {
+                    switch (filename) {
+                        case 'jpg':
+                        case 'jpeg':
+                        case 'png':
+                        case 'gif':
+                        case 'svg':
+                            return true
+                        }
+                        return false
+                }
+            }
+        }
+
+        const product_id = request.body.product_id
+
+        const name = request.body.name
+        const description = request.body.description
+        const stock = request.body.stock
+        const price = request.body.price
+        const unit = request.body.unit
+        const category_id = request.body.category_id
+        const user_id = request.body.user_id
+        const photo = request.file.originalname
+
+        try {
+            if(error === false) {
+                await Product.updateProduct(product_id, name, unit, price, stock, description, category_id, user_id)
+
+                const data = {
+                    name,
+                    description,
+                    stock,
+                    price,
+                    unit,
+                    category_id,
+                    user_id,
+                    product_id,
+                    photo
+                }
+
                 response.json(data)
             }
         } catch(error) {
             console.error(error)
-            response.status(500).send('Server Errror')
+            response.status(500).json('Server Error')
         }
 
     },
+
+    deleteProduct: async (request, response) => {
+
+        const product_id = request.body.product_id
+
+        try {
+            await Product.deleteProduct(product_id)
+            response.json('Success delete')
+        } catch(error) {
+            console.error(error)
+            response.status(500).json('Server Error')
+        }
+
+    },
+
     addCart: async (request, response) => {
 
         const product_id = request.body.product_id
