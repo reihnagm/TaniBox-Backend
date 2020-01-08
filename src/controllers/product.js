@@ -35,6 +35,7 @@ module.exports = {
         const product_id = request.body.product_id
         try {
             const response = await Product.getSingleProduct(product_id)
+            response.json(response)
         } catch(error) {
             console.error(error)
             response.status(500).json('Server Error')
