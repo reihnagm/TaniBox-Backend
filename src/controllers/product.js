@@ -30,7 +30,18 @@ module.exports = {
         }
 
     },
-    addProduct: async (request, response, next) => {
+
+    getSingleProduct: async (request, reponse) => {
+        const product_id = request.body.product_id
+        try {
+            const response = await Product.getSingleProduct(product_id)
+        } catch(error) {
+            console.error(error)
+            response.status(500).json('Server Error')
+        }
+    },
+
+    addProduct: async (request, response) => {
 
         let error = false
 
@@ -131,6 +142,14 @@ module.exports = {
             response.status(5000).send('Server Error')
         }
 
+    },
+    getWishlist: async (request, response) => {
+        try {
+
+        } catch(error) {
+            console.error(error)
+            reponse.status(500).json('Server Error')
+        }
     },
     addWishlist: async (request, response) => {
 

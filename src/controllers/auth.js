@@ -54,8 +54,6 @@ module.exports = {
 
         const { name, email, password, role } = request.body
 
-        console.log(name, email, password, role)
-
         try {
                 const user = await User.checkUser(email)
 
