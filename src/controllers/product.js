@@ -116,11 +116,11 @@ module.exports = {
                     photo
                 }
 
-                misc.response(response_addProduct, 200, false, 'Successfull create', data)
+                misc.response(response, 200, false, 'Successfull create', data)
             }
         } catch(error) {
             console.error(error)
-            misc.response(error, 500, true, 'Server Error')
+            misc.response(response, 500, true, 'Server Error')
         }
 
     },

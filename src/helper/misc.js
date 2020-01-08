@@ -1,5 +1,3 @@
-'use strict';
-
 module.exports = {
 	response: (res, status, error, message, data) => {
 		let resultPrint = {}
