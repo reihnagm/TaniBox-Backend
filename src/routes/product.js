@@ -19,5 +19,6 @@ const upload = multer({
 Route.get('/', Product.getAll)
      .post('/', upload.single('photo'), Product.addProduct)
      .post('/add-cart', Product.addCart)
+     .post('/wishlist', Product.addWishlist)
 
 module.exports = Route

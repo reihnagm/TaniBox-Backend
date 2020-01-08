@@ -2,7 +2,9 @@ const Product = require('../models/Product')
 const fs = require('fs-extra')
 
 module.exports = {
+
     getAll: async (request, response) => {
+
             const page = parseInt(request.query.page) || 1
             const search = request.query.search || ''
             const limit = request.query.limit || 10
@@ -26,6 +28,7 @@ module.exports = {
             console.error(error.message)
             response.status(500).send('Server Error')
         }
+
     },
     addProduct: async (request, response, next) => {
 
@@ -84,7 +87,7 @@ module.exports = {
                 const response_addProduct = await Product.addProduct(name, unit, price, stock, description, category_id, user_id)
                 const product_id = response_addProduct.insertId
                 await Product.addProductPhoto(product_id, photo)
-            
+
                 const data = {
                     name,
                     description,
@@ -128,5 +131,26 @@ module.exports = {
             response.status(5000).send('Server Error')
         }
 
+    },
+    addWishlist: async (request, response) => {
+
+        const product_id = request.body.product_id
+        const user_id = request.body.user_id
+
+        try {
+            await Product.addWishlist(product_id, user_id)
+
+            const data = {
+                product_id,
+                user_id
+            }
+
+            response.json(data)
+        } catch(error) {
+            console.error(error)
+            response.status(500).json('Server Error')
+        }
+
     }
+
 }

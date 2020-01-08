@@ -56,7 +56,22 @@ module.exports = {
     },
     addProductPhoto: (product_id, photo) => {
         return new Promise((resolve, reject) => {
-            const query = `INSERT INTO photo_product (photo, product_id) VALUES ('${photo}', '${product_id}')`
+            const query = `INSERT INTO photo_product (photo, product_id)
+                            VALUES ('${photo}', '${product_id}')`
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                }
+                else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    addWishlist: (product_id, user_id) => {
+        return new Promise((resolve, reject) => {
+            const query = `INSERT INTO wishlist (product_id, user_id)
+                            VALUES ('${product_id}', '${user_id}')`
             connection.query(query, (error, result) => {
                 if(error) {
                     reject(new Error(error))
