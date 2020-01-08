@@ -77,7 +77,7 @@ module.exports = {
 
                     const token = await jwt.sign(payload, process.env.JWT_KEY, { expiresIn: 360000 })
 
-                    response.json({ token })
+                    response.json('Success register')
 
                 } else {
                     return response.status(400).json({ errors: [{ msg: 'User already exists' }] });

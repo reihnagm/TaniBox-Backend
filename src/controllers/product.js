@@ -151,6 +151,26 @@ module.exports = {
             response.status(500).json('Server Error')
         }
 
+    },
+    deleteWishlist: async (request, response) => {
+
+        const product_id = request.body.product_id
+        const user_id = request.body.user_id
+
+        try {
+            await Product.deleteWishlist(product_id, user_id)
+
+            const data = {
+                product_id,
+                user_id
+            }
+
+            response.json(data)
+        } catch(error) {
+            console.error(error)
+            response.status(500).json('Server Error')
+        }
+
     }
 
 }

@@ -20,5 +20,6 @@ Route.get('/', Product.getAll)
      .post('/', upload.single('photo'), Product.addProduct)
      .post('/add-cart', Product.addCart)
      .post('/wishlist', Product.addWishlist)
+     .delete('/delete-wishlist', Product.deleteWishlist)
 
 module.exports = Route

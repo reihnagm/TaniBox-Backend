@@ -81,5 +81,18 @@ module.exports = {
                 }
             })
         })
+    },
+    deleteWishlist: (product_id, user_id) => {
+        return new Promise((resolve, reject) => {
+            const query = `DELETE FROM wishlist WHERE product_id = '${product_id}' and user_id = '${user_id}'`
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                }
+                else {
+                    resolve(result)
+                }
+            })
+        })
     }
 }
