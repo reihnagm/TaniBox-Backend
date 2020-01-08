@@ -195,11 +195,11 @@ module.exports = {
                     photo
                 }
 
-                response.json(data)
+                misc.response(response, 200, false, 'Successfull update', data)
             }
         } catch(error) {
             console.error(error)
-            response.status(500).json('Server Error')
+            misc.response(response, 500, true, 'Server Error')
         }
 
     },
