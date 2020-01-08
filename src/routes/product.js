@@ -18,6 +18,8 @@ const upload = multer({
 
 Route.get('/', Product.getAll)
      .get('/single-product', Product.getSingleProduct)
+     .get('/cart', Product.getCart)
+     .get('/single-cart', Product.getSingleCart)
      .get('/wishlist', Product.getWishlist)
      .post('/', upload.single('photo'), Product.addProduct)
      .patch('/update-product', upload.single('photo'), Product.updateProduct)

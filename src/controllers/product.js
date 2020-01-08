@@ -221,11 +221,38 @@ module.exports = {
 
     },
 
+    getCart: async (request, response) => {
+
+        try {
+            const data = await Product.getCart()
+            misc.response(response, 200, false, 'Successfull get cart', data)
+        } catch(error) {
+            console.error(error)
+            misc.response(response, 500, true, 'Server error')
+        }
+
+    },
+
+
+    getCartByUserId: async (request, response) => {
+
+        const user_id = request.body.user_id
+
+        try {
+            const data = await Product.getCartByUserId(user_id)
+            misc.response(response, 200, false, 'Successfull get cart by user id', data)
+        } catch (error) {
+            console.error(error)
+            misc.response(response, 500, true, 'Server error')
+        }
+
+    },
+
     addCart: async (request, response) => {
 
         const product_id = request.body.product_id
         const user_id = request.body.user_id
-        const qty = request.body.qty
+        const qty = parseInt(request.body.qty)
         const unit_price = parseInt(request.body.unit_price)
         const total = qty * unit_price
 
@@ -266,8 +293,8 @@ module.exports = {
         const cart_id = request.body.cart_id
         const product_id = request.body.product_id
         const user_id = request.body.user_id
-        const qty = request.body.qty
-        const unit_price = request.body.unit_price
+        const qty = parseInt(request.body.qty)
+        const unit_price = parseInt(request.body.unit_price)
         const total = qty * unit_price
 
         try {
@@ -298,6 +325,7 @@ module.exports = {
             misc.response(response, 500, true, 'Server error')
         }
     },
+
     addWishlist: async (request, response) => {
 
         const product_id = request.body.product_id
@@ -318,6 +346,7 @@ module.exports = {
         }
 
     },
+
     deleteWishlist: async (request, response) => {
 
         const product_id = request.body.product_id
