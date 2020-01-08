@@ -17,17 +17,19 @@ module.exports = {
             const prevPage = page === 1 ? 1 : page - 1
             const nextPage = page === total[0].total ? total[0].total : page + 1
             const data = await Product.getAll(offset, limit, sort, sortBy, search)
-            response.json({
-                data,
+
+            let pageDetail = {
                 total: Math.ceil(total[0].total),
                 per_page: limit,
                 current_page: page,
-                nextLink: `http://localhost:5000${request.originalUrl.replace('page=' + page, 'page=' + nextPage)}`,
-                prevLink: `http://localhost:5000${request.originalUrl.replace('page=' + page, 'page=' + prevPage)}`
-            })
+                nextLink: `http://34.202.135.29:4000${request.originalUrl.replace('page=' + page, 'page=' + nextPage)}`,
+                prevLink: `http://34.202.135.29:4000${request.originalUrl.replace('page=' + page, 'page=' + prevPage)}`
+            }
+
+            misc.responsePagination(response, 200, false, 'Successfull get all data', pageDetail, data)
         } catch (error) {
-            console.error(error.message)
-            response.status(500).send('Server Error')
+            console.error(error)
+            misc.response(response, 500, true, 'Server error')
         }
 
     },
@@ -38,10 +40,11 @@ module.exports = {
 
         try {
             const data = await Product.getSingleProduct(product_id)
-            response.json(data)
+            misc.response(response, 200, false, 'Successfull get single product', data)
+
         } catch(error) {
             console.error(error)
-            response.status(500).json('Server Error')
+            misc.response(response, 500, true, 'Server error')
         }
 
     },
@@ -116,7 +119,7 @@ module.exports = {
                     photo
                 }
 
-                misc.response(response, 200, false, 'Successfull create', data)
+                misc.response(response, 200, false, 'Successfull create product', data)
             }
         } catch(error) {
             console.error(error)
@@ -195,7 +198,7 @@ module.exports = {
                     photo
                 }
 
-                misc.response(response, 200, false, 'Successfull update', data)
+                misc.response(response, 200, false, 'Successfull update product', data)
             }
         } catch(error) {
             console.error(error)
@@ -210,10 +213,10 @@ module.exports = {
 
         try {
             await Product.deleteProduct(product_id)
-            response.json('Success delete')
+            misc.response(response, 200, false, 'Successfull delete product')
         } catch(error) {
             console.error(error)
-            response.status(500).json('Server Error')
+            misc.response(response, 500, true, 'Server error')
         }
 
     },
@@ -225,6 +228,7 @@ module.exports = {
         const qty = request.body.qty
         const unit_price = parseInt(request.body.unit_price)
         const total = qty * unit_price
+
         const data = {
             product_id,
             user_id,
@@ -235,19 +239,20 @@ module.exports = {
 
         try {
             await Product.addCart(unit_price, qty, total, product_id, user_id)
-            response.json(data)
+            misc.response(response, 200, false, 'Successfull add cart', data)
         } catch(error) {
-            console.error(error.message)
-            response.status(5000).send('Server Error')
+            console.error(error)
+            misc.response(response, 500, true, 'Server error')
         }
 
     },
     getWishlist: async (request, response) => {
         try {
-
+            await Product.getWishlist()
+            misc.response(response, 200, false, 'Successfull get product in wishlist')
         } catch(error) {
             console.error(error)
-            reponse.status(500).json('Server Error')
+            misc.response(response, 500, true, 'Server error')
         }
     },
     addWishlist: async (request, response) => {
@@ -263,10 +268,10 @@ module.exports = {
                 user_id
             }
 
-            response.json(data)
+            misc.response(response, 200, false, 'Successfull add product to wishlist', data)
         } catch(error) {
             console.error(error)
-            response.status(500).json('Server Error')
+            misc.response(response, 500, true, 'Server error')
         }
 
     },
@@ -282,11 +287,10 @@ module.exports = {
                 product_id,
                 user_id
             }
-
-            response.json(data)
+            misc.response(response, 200, false, 'Successfull delete product to wishlist', data)
         } catch(error) {
             console.error(error)
-            response.status(500).json('Server Error')
+            misc.response(response, 500, true, 'Server error')
         }
 
     }
