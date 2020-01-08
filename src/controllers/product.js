@@ -277,7 +277,9 @@ module.exports = {
                 cart_id,
                 qty,
                 unit_price,
-                total
+                total,
+                product_id,
+                user_id
             }
 
             misc.response(response, 200, false, 'Successfull update cart', data)
