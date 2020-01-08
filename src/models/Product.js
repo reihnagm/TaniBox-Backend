@@ -65,8 +65,8 @@ module.exports = {
             stock = '${stock}',
             description = '${description}',
             category_id = '${category_id}',
-            user_id = '${user_id}',
-            WHERE id = ${product_id}`
+            user_id = '${user_id}'
+            WHERE id = '${product_id}'`
             connection.query(query, (error, result) => {
                 if(error) {
                     reject(new Error(error))
