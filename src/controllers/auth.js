@@ -110,7 +110,7 @@ module.exports = {
         const email = request.body.email
 
         let transporter = nodemailer.createTransport({
-            service: "gmail.com",
+            service: "gmail",
                 xoauth2: xoauth2.createXOAuth2Generator ({
                     user: "reihanagam7@gmail.com",
                     clientId: "651144799056-s2vbgbo49rtgckvggj0g4m71v5693d4i.apps.googleusercontent.com",
