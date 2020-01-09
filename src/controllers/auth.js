@@ -43,7 +43,10 @@ module.exports = {
 
             const payload = {
                 user: {
-                    id: user[0].id
+                    id: user[0].id,
+                    name: user[0].name,
+                    email: user[0].email,
+                    role: user[0].role
                 }
             }
 
@@ -115,7 +118,7 @@ module.exports = {
 
         if(OTP !== checkOTP[0].OTP) {
             error = true
-            misc.response(response, 500, true, 'Ooops, OTP is not match')
+            misc.response(response, 500, true, 'Oops!, OTP is not match')
         }
 
         const getOTP = () => {
