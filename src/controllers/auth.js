@@ -1,7 +1,7 @@
 require('dotenv').config()
 
 const User = require('../models/User')
-const nodemailter  = require('nodemailer')
+const nodemailer  = require('nodemailer')
 const misc = require('../helper/misc')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -122,7 +122,7 @@ module.exports = {
 
           let info = await transporter.sendMail({
               from: "Administrator <admin@tanibox.mail>",
-              to: "reihanagam7@gmail.com", 
+              to: "reihanagam7@gmail.com",
               subject: "Reset Password",
               text: "Untuk merubah password, silahkan klik link dibawah ini."
           })
