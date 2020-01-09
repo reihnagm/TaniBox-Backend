@@ -1,32 +1,26 @@
 require('dotenv').config()
 
 const Profile = require('../models/Profile')
+const fs = require('fs-extra')
+const misc = require('../helper/misc')
 
 module.exports = {
 
     getProfile: async (request, response) => {
-
         const userId = request.body.user_id
-
         try {
-
             const checkRole = await Profile.checkRole(userId)
-
             if (checkRole.length === 0) {
-                return response.status(400).json({ errors: [{ msg: 'User not found' }] })
+                return misc.response(response, 400, false, 'User not found')
             }
-
             const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
-
             if (profile.length === 0) {
-                return response.status(400).json({ errors: [{ msg: 'Profile not found' }] })
+                return misc.response(response, 400, false, 'Profile not found')
             }
-
-            response.status(200).json(profile)
-
+            misc.response(response, 200, false, 'Successfull get single profile', profile)
         } catch(error) {
             console.error(error.message)
-            response.status(500).send('Server error')
+            misc.response(response, 500, true, 'Server error')
         }
     },
 
@@ -35,7 +29,7 @@ module.exports = {
             const userId = request.body.user_id
             const checkRole = await Profile.checkRole(userId)
             if (checkRole.length === 0) {
-                return response.status(400).json({ errors: [{ msg: 'User not found' }] })
+                return misc.response(response, 400, false, 'User not found')
             }
             let requireCheck = []
             let data = {}
@@ -63,7 +57,7 @@ module.exports = {
                 !phone ? requireCheck.push('phone is required') : ''
 
                 if (requireCheck.length) {
-                    return response.status(400).json({ errors: [{ msg: requireCheck }] });
+                    return misc.response(response, 400, false, 'Not Valid', { errors: [{ msg: requireCheck }] })
                 }
 
                 data = { 
@@ -116,7 +110,7 @@ module.exports = {
                 !phone ? requireCheck.push('phone is required') : ''
 
                 if (requireCheck.length) {
-                    return response.status(400).json({ errors: [{ msg: requireCheck }] });
+                    return misc.response(response, 400, false, 'Not Valid', { errors: [{ msg: requireCheck }] })
                 }
 
                 data = { 
@@ -147,11 +141,10 @@ module.exports = {
                     id: created.insertId
                 }
             }
-            response.json(payload)
-
+            misc.response(response, 200, false, 'Create Success', payload)
         } catch(error) {
             console.error(error.message);
-            response.status(500).send('Server error');
+            misc.response(response, 500, true, 'Server error')
         }
     },
 
@@ -160,7 +153,7 @@ module.exports = {
             const userId = request.body.user_id
             const checkRole = await Profile.checkRole(userId)
             if (checkRole.length === 0) {
-                return response.status(400).json({ errors: [{ msg: 'User not found' }] })
+                return misc.response(response, 400, false, 'User not found')
             }
             let requireCheck = []
             let data = {}
@@ -188,7 +181,7 @@ module.exports = {
                 !phone ? requireCheck.push('phone is required') : ''
 
                 if (requireCheck.length) {
-                    return response.status(400).json({ errors: [{ msg: requireCheck }] });
+                    return misc.response(response, 400, false, 'Not Valid', { errors: [{ msg: requireCheck }] })
                 }
 
                 data = [
@@ -241,7 +234,7 @@ module.exports = {
                 !phone ? requireCheck.push('phone is required') : ''
 
                 if (requireCheck.length) {
-                    return response.status(400).json({ errors: [{ msg: requireCheck }] });
+                    return misc.response(response, 400, false, 'Not Valid', { errors: [{ msg: requireCheck }] })
                 }
 
                 data = [ 
@@ -269,15 +262,15 @@ module.exports = {
             const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
 
             if (profile.length === 0) {
-                return response.status(400).json({ errors: [{ msg: 'Profile not found' }] })
+                return misc.response(response, 400, false, 'Profile not found')
             }
 
             await Profile.updateProfile(checkRole[0].role, data)
-            response.json('edit success')
+            misc.response(response, 200, false, 'Edit Success', payload)
 
         } catch(error) {
             console.error(error.message);
-            response.status(500).send('Server error');
+            misc.response(response, 500, true, 'Server error')
         }
     },
 
@@ -290,22 +283,22 @@ module.exports = {
             const checkRole = await Profile.checkRole(userId)
 
             if (checkRole.length === 0) {
-                return response.status(400).json({ errors: [{ msg: 'User not found' }] })
+                return misc.response(response, 400, false, 'User not found')
             }
             
             const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
 
             if (profile.length === 0) {
-                return response.status(400).json({ errors: [{ msg: 'Profile not found' }] })
+                return misc.response(response, 400, false, 'Profile not found')
             }
 
             checkRole[0].role === 'buyer' ? await Profile.deleteBuyer(userId) : await Profile.deleteSeller(userId)
 
-            response.status(200).json({msg: 'data deleted'})
+                misc.response(response, 200, false, 'profile deleted')
 
         } catch(error) {
             console.error(error.message)
-            response.status(500).send('Server error')
+            misc.response(response, 500, true, 'Server error')
         }
     },
 
@@ -316,10 +309,10 @@ module.exports = {
 
                 if(request.file.size >= 5242880) {
                     const message = 'Oops!, Size cannot more than 5MB'
-                     response.json(message)
+                     misc.response(response, 400, false, message)
                      error = true
                     fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
-                        if (error) response.json(error)
+                        if (error) misc.response(response, 400, false, error)
                     })
                 }
 
@@ -329,10 +322,10 @@ module.exports = {
 
                 if(!isImage(filename)) {
                     const message = 'Oops!, File allowed only JPG, JPEG, PNG, GIF, SVG'
-                    response.json(message)
+                    misc.response(response, 400, false, message)
                     error = true
                     fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
-                        if (error) response.json(error)
+                        if (error) misc.response(response, 400, false, error)
                     })
                 }
 
@@ -357,11 +350,11 @@ module.exports = {
         try {
             if(error === false) {
                 await Profile.uploadBuyer(photo, user_id)
-                response.status(200).json('Upload Success')
+                misc.response(response, 200, false, 'upload success')
             }
         } catch(error) {
             console.error(error)
-            response.status(500).send('Server Errror')
+            misc.response(response, 500, true, 'Server error')
         }
 
     },
@@ -373,10 +366,10 @@ module.exports = {
 
                 if(request.file.size >= 5242880) {
                     const message = 'Oops!, Size cannot more than 5MB'
-                     response.json(message)
+                     misc.response(response, 400, false, message)
                      error = true
                     fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
-                        if (error) response.json(error)
+                        if (error) misc.response(response, 400, false, error)
                     })
                 }
 
@@ -386,10 +379,10 @@ module.exports = {
 
                 if(!isImage(filename)) {
                     const message = 'Oops!, File allowed only JPG, JPEG, PNG, GIF, SVG'
-                    response.json(message)
+                    misc.response(response, 400, false, message)
                     error = true
                     fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
-                        if (error) response.json(error)
+                        if (error) misc.response(response, 400, false, error)
                     })
                 }
 
@@ -414,11 +407,11 @@ module.exports = {
         try {
             if(error === false) {
                 await Profile.uploadSeller(photo, user_id)
-                response.status(200).json('Upload Success')
+                misc.response(response, 200, false, 'upload success')
             }
         } catch(error) {
             console.error(error)
-            response.status(500).send('Server Errror')
+            misc.response(response, 500, true, 'Server error')
         }
 
     },
@@ -430,10 +423,10 @@ module.exports = {
 
                 if(request.file.size >= 5242880) {
                     const message = 'Oops!, Size cannot more than 5MB'
-                     response.json(message)
+                     misc.response(response, 400, false, message)
                      error = true
                     fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
-                        if (error) response.json(error)
+                        if (error) misc.response(response, 400, false, error)
                     })
                 }
 
@@ -443,10 +436,10 @@ module.exports = {
 
                 if(!isImage(filename)) {
                     const message = 'Oops!, File allowed only JPG, JPEG, PNG, GIF, SVG'
-                    response.json(message)
+                    misc.response(response, 400, false, message)
                     error = true
                     fs.unlink(`public/images/profile/${request.file.filename}`, function(error) {
-                        if (error) response.json(error)
+                        if (error) misc.response(response, 400, false, error)
                     })
                 }
 
@@ -471,11 +464,11 @@ module.exports = {
         try {
             if(error === false) {
                 await Profile.uploadStore(photo, user_id)
-                response.status(200).json('Upload Success')
+                misc.response(response, 200, false, 'upload success')
             }
         } catch(error) {
             console.error(error)
-            response.status(500).send('Server Errror')
+            misc.response(response, 500, true, 'Server error')
         }
 
     },
