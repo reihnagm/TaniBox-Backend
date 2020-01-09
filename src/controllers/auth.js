@@ -112,7 +112,7 @@ module.exports = {
         let transporter = nodemailer.createTransport({
             service: "gmail.com",
                 xoauth2: xoauth2.createXOAuth2Generator ({
-                    user: process.env.USER_MAIL,
+                    user: "reihanagam7@gmail.com",
                     clientId: "651144799056-s2vbgbo49rtgckvggj0g4m71v5693d4i.apps.googleusercontent.com",
                     clientSecret: "-ePlZarTeSee-2Mf41FQP_Gy",
                     refreshToken: "1//049Ti11_APf59CgYIARAAGAQSNwF-L9Irzy4exMjjuPe5QycIcS0TviXIDSPZS-L38zar99oV2x7coFTB3B3rN471oIRCJPrr2XY"
