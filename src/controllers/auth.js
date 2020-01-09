@@ -110,15 +110,20 @@ module.exports = {
         const email = request.body.email
 
         let transporter = nodemailer.createTransport({
-            service: "gmail",
-                xoauth2: xoauth2.createXOAuth2Generator ({
-                    user: "reihanagam7@gmail.com",
-                    clientId: "651144799056-s2vbgbo49rtgckvggj0g4m71v5693d4i.apps.googleusercontent.com",
-                    clientSecret: "-ePlZarTeSee-2Mf41FQP_Gy",
-                    accessToken: "ya29.Il-4BzNCasPcZsi-lYsRUFFNEhu5Dtb7GmN5QMXBYIlmTVzWR49JprrLYrS1KkRtoGxEpZiowgnJaTCTyS9op-J0Jl6kiW7xsl8X_AKKgEI6dIKpFVJqBKAEYlDV_ohqlg",
-                    refreshToken: "1//049Ti11_APf59CgYIARAAGAQSNwF-L9Irzy4exMjjuPe5QycIcS0TviXIDSPZS-L38zar99oV2x7coFTB3B3rN471oIRCJPrr2XY"
-                })
-            })
+
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false,
+            auth: {
+                type: "OAuth2",
+                user: "reihanagam7@gmail.com",
+                clientId: "651144799056-s2vbgbo49rtgckvggj0g4m71v5693d4i.apps.googleusercontent.com",
+                clientSecret: "-ePlZarTeSee-2Mf41FQP_Gy",
+                accessToken: "ya29.Il-4BzNCasPcZsi-lYsRUFFNEhu5Dtb7GmN5QMXBYIlmTVzWR49JprrLYrS1KkRtoGxEpZiowgnJaTCTyS9op-J0Jl6kiW7xsl8X_AKKgEI6dIKpFVJqBKAEYlDV_ohqlg",
+                refreshToken: "1//049Ti11_APf59CgYIARAAGAQSNwF-L9Irzy4exMjjuPe5QycIcS0TviXIDSPZS-L38zar99oV2x7coFTB3B3rN471oIRCJPrr2XY"
+           },
+
+       })
 
         try {
 
