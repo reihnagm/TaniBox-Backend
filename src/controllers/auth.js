@@ -134,6 +134,8 @@ module.exports = {
               text: "Untuk merubah password, silahkan klik link dibawah ini."
           })
 
+          misc.response(response, 200, false, 'Successfull email sent')
+
         } catch (error) {
             console.error(error)
             misc.response(response, 500, true, 'Server error')
