@@ -77,6 +77,19 @@ module.exports = {
             })
         })
     },
+    updateProductPhoto: (product_id, photo) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE photo_product SET photo = '${photo}' WHERE product_id = '${product_id}'`
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                }
+                else {
+                    resolve(result)
+                }
+            })
+        })
+    },
     getSingleProduct: (product_id) => {
         return new Promise((resolve, reject) => {
             const query = `SELECT * FROM products WHERE id = '${product_id}'`

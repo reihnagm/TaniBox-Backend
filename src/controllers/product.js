@@ -185,6 +185,7 @@ module.exports = {
         try {
             if(error === false) {
                 await Product.updateProduct(product_id, name, unit, price, stock, description, category_id, user_id)
+                await Product.updateProductPhoto(product_id, photo)
 
                 const data = {
                     name,
