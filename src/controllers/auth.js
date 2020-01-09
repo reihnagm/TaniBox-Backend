@@ -194,6 +194,7 @@ module.exports = {
                     const salt = await bcrypt.genSalt(10);
                     const passwordHash = await bcrypt.hash(password, salt)
                     await User.updatePassword(passwordHash, email)
+                    await User.updateOTPToNull(email)
                     misc.response(response, 200, false, 'Successfull update password')
                 }
             } catch(error) {

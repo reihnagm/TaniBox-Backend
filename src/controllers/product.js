@@ -318,6 +318,7 @@ module.exports = {
     },
 
     getWishlist: async (request, response) => {
+        
         try {
             await Product.getWishlist()
             misc.response(response, 200, false, 'Successfull get product in wishlist')
@@ -325,6 +326,7 @@ module.exports = {
             console.error(error)
             misc.response(response, 500, true, 'Server error')
         }
+
     },
 
     addWishlist: async (request, response) => {
