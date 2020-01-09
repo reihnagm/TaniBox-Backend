@@ -7,7 +7,7 @@ const misc = require('../helper/misc')
 module.exports = {
 
     getProfile: async (request, response) => {
-        const userId = request.params.user_id
+        const userId = request.body.user_id
         try {
             const checkRole = await Profile.checkRole(userId)
             if (checkRole.length === 0) {
