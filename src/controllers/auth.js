@@ -111,10 +111,12 @@ module.exports = {
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
-            secure: false, // NOTE : TRUE FOR 465, FALSE FOR OTHER PORTS
+            secure: true, // NOTE : TRUE FOR 465, FALSE FOR OTHER PORTS
                 auth: {
-                    user: process.env.USER_EMAIL,
-                    pass: process.env.USER_PASSWORD
+                    type: 'OAuth2',
+                    user: 'reihanagam7@gmail.com',
+                    clientId: '906146853231-nl3sipnlf0shdbh3b38r3gtmksrs61v0.apps.googleusercontent.com',
+                    clientSecret: 'Bm0U1AmoIIEjgb3Sx-fX_txi',
                 }
             })
 
