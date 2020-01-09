@@ -1,8 +1,6 @@
 require('dotenv').config()
 
 const Profile = require('../models/Profile')
-const bcrypt = require('bcryptjs')
-const jwt = require('jsonwebtoken')
 
 module.exports = {
 
@@ -13,7 +11,11 @@ module.exports = {
         try {
 
             const checkRole = await Profile.checkRole(userId)
-            
+
+            if (checkRole.length === 0) {
+                return response.status(400).json({ errors: [{ msg: 'User not found' }] })
+            }
+
             const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
 
             if (profile.length === 0) {
@@ -32,6 +34,9 @@ module.exports = {
         try {
             const userId = request.body.user_id
             const checkRole = await Profile.checkRole(userId)
+            if (checkRole.length === 0) {
+                return response.status(400).json({ errors: [{ msg: 'User not found' }] })
+            }
             let requireCheck = []
             let data = {}
             if (checkRole[0].role === 'buyer') {
@@ -154,6 +159,9 @@ module.exports = {
         try {
             const userId = request.body.user_id
             const checkRole = await Profile.checkRole(userId)
+            if (checkRole.length === 0) {
+                return response.status(400).json({ errors: [{ msg: 'User not found' }] })
+            }
             let requireCheck = []
             let data = {}
             if (checkRole[0].role === 'buyer') {
@@ -258,6 +266,12 @@ module.exports = {
                 ]
             }
 
+            const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
+
+            if (profile.length === 0) {
+                return response.status(400).json({ errors: [{ msg: 'Profile not found' }] })
+            }
+
             await Profile.updateProfile(checkRole[0].role, data)
             response.json('edit success')
 
@@ -274,6 +288,10 @@ module.exports = {
         try {
 
             const checkRole = await Profile.checkRole(userId)
+
+            if (checkRole.length === 0) {
+                return response.status(400).json({ errors: [{ msg: 'User not found' }] })
+            }
             
             const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
 
