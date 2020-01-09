@@ -111,7 +111,7 @@ module.exports = {
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
             port: 587,
-            secure: true, // NOTE : TRUE FOR 465, FALSE FOR OTHER PORTS
+            secure: false, // NOTE : TRUE FOR 465, FALSE FOR OTHER PORTS
                 auth: {
                     type: 'OAuth2',
                     user: 'reihanagam7@gmail.com',
