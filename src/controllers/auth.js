@@ -122,8 +122,8 @@ module.exports = {
         try {
 
           let info = await transporter.sendMail({
-              from: "Administrator <admin@tanibox.mail>",
-              to: "reihanagam7@gmail.com",
+              from: "Administrator <reihanagam7@gmail.com>",
+              to: "reihanagamsk@gmail.com",
               subject: "Reset Password",
               text: "Untuk merubah password, silahkan klik link dibawah ini."
           })
