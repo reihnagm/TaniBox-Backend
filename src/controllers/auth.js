@@ -110,6 +110,13 @@ module.exports = {
         let error = false
 
         const email = request.body.email
+        const OTP = request.body.OTP
+        const checkOTP = await User.getDBOTP(email)
+
+        if(OTP !== checkOTP[0].OTP) {
+            error = true
+            misc.response(response, 500, true, 'Ooops, OTP is not match')
+        }
 
         const getOTP = () => {
              const digits = '0123456789';
