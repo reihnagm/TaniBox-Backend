@@ -2,7 +2,6 @@ require('dotenv').config()
 
 const User = require('../models/User')
 const nodemailer  = require('nodemailer')
-const xoauth2 = require('xoauth2')
 const misc = require('../helper/misc')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
