@@ -19,7 +19,7 @@ module.exports = {
 
             await axios.get(url, config)
             .then(function (res) {
-                return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results)
+                return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results, request.originalUrl)
             })
             .catch(function (error) {
                 // handle error
