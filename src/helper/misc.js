@@ -12,7 +12,6 @@ module.exports = {
 	},
 	responsePagination: (res, status, error, message, pageDetail, data) => {
 		let resultPrint = {}
-		resultPrint.id = uidv4()
 		resultPrint.status = status || 200
 		resultPrint.error = error || false
 		resultPrint.message = message || 'Success'

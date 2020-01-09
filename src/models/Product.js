@@ -67,6 +67,20 @@ module.exports = {
             category_id = '${category_id}',
             user_id = '${user_id}'
             WHERE id = '${product_id}'`
+            
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                }
+                else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    updateProductPhoto: (product_id, photo) => {
+        return new Promise((resolve, reject) => {
+            const query = `UPDATE photo_product SET photo = '${photo}' WHERE product_id = '${product_id}'`
             connection.query(query, (error, result) => {
                 if(error) {
                     reject(new Error(error))

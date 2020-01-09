@@ -1,7 +1,6 @@
 const connection = require('../configs/db')
 
 module.exports = {
-
     auth: (id) => {
         return new Promise((resolve, reject) => {
             connection.query(`SELECT id, name, email FROM user WHERE id = '${id}'`, (error, result) => {
@@ -13,10 +12,9 @@ module.exports = {
             })
         })
     },
-
     login: (email) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT * FROM user WHERE email = '${email}'`, (error, result) => {
+            connection.query(`SELECT * FROM user WHERE email = ?`, email, (error, result) => {
                 if (error) {
                     reject(new Error(error))
                 } else {
@@ -25,7 +23,6 @@ module.exports = {
             })
         })
     },
-
     register: (data) => {
         return new Promise((resolve, reject) => {
             connection.query('INSERT INTO user SET ?', data, (error, result) => {
@@ -37,10 +34,9 @@ module.exports = {
             })
         })
     },
-
     checkUser: (email) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT email FROM user WHERE email = '${email}'`, (error, result) => {
+            connection.query(`SELECT email, OTP FROM user WHERE email = '${email}'`, (error, result) => {
                 if (error) {
                     reject(new Error(error))
                 } else {
@@ -48,6 +44,39 @@ module.exports = {
                 }
             })
         })
+    },
+    getDBOTP: (email) => {
+        return new Promise((resolve, reject) => {
+            connection.query(`SELECT OTP FROM user WHERE email = '${email}'`, (error, result) => {
+                if (error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    updateOTP: (email, OTP) => {
+        return new Promise((resolve, reject) => {
+            connection.query(`UPDATE user SET OTP = '${OTP}' WHERE email = '${email}'`, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+    updatePassword: (passwordHash, email) => {
+        return new Promise((resolve, reject) => {
+            query = `UPDATE user SET password = '${passwordHash}' WHERE email = '${email}'`
+            connection.query(query, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
     }
-
 }
