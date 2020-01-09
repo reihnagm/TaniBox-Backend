@@ -1,5 +1,6 @@
 require('dotenv').config()
 const axios = require('axios');
+const misc = require('../helper/misc')
 const querystring = require('querystring');
 const config = {
     headers: {
@@ -18,7 +19,7 @@ module.exports = {
 
             await axios.get(url, config)
             .then(function (res) {
-                return response.status(200).json(res.data)
+                return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results)
             })
             .catch(function (error) {
                 // handle error
@@ -26,7 +27,7 @@ module.exports = {
             })
         } catch(error) {
             console.error(error.message)
-            response.status(500).send('Server error')
+            misc.response(response, 500, true, 'Server error')
         }
     },
 
@@ -39,7 +40,7 @@ module.exports = {
             
             await axios.get(url, config)
             .then(function (res) {
-                return response.status(200).json(res.data)
+                return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results)
             })
             .catch(function (error) {
                 // handle error
@@ -47,7 +48,7 @@ module.exports = {
             })
         } catch(error) {
             console.error(error.message)
-            response.status(500).send('Server error')
+            misc.response(response, 500, true, 'Server error')
         }
     },
 
@@ -61,7 +62,7 @@ module.exports = {
             return response.status(200).json({data: items})
         } catch(error) {
             console.error(error.message)
-            response.status(500).send('Server error')
+            misc.response(response, 500, true, 'Server error')
         }
     },
 
@@ -89,7 +90,7 @@ module.exports = {
             
             await axios.post(url, querystring.stringify(data), config)
             .then(function (res) {
-                return response.status(200).json(res.data)
+                return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results)
             })
             .catch(function (error) {
                 // handle error
@@ -97,7 +98,7 @@ module.exports = {
             })
         } catch(error) {
             console.error(error.message)
-            response.status(500).send('Server error')
+            misc.response(response, 500, true, 'Server error')
         }
     },
 
