@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const User = require('../models/User')
+const nodemailter  = require('nodemailer')
 const misc = require('../helper/misc')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -100,6 +101,37 @@ module.exports = {
             console.error(error.message)
             misc.response(response, 500, true, 'Server error')
         }
+
+    },
+
+    forgotPassword: async (request, response) => {
+
+        const email = request.body.email
+
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false, // NOTE : TRUE FOR 465, FALSE FOR OTHER PORTS
+                auth: {
+                    user: process.env.USER_EMAIL,
+                    pass: process.env.USER_PASSWORD
+                }
+            })
+
+        try {
+
+          let info = await transporter.sendMail({
+              from: "Administrator <admin@tanibox.mail>",
+              to: "reihanagam7@gmail.com", 
+              subject: "Reset Password",
+              text: "Untuk merubah password, silahkan klik link dibawah ini."
+          })
+
+        } catch (error) {
+            console.error(error)
+            misc.response(response, 500, true, 'Server error')
+        }
+
 
     }
 
