@@ -107,6 +107,8 @@ module.exports = {
 
     forgotPassword: async (request, response) => {
 
+        let error = false
+
         const email = request.body.email
 
         const getOTP = () => {
@@ -119,38 +121,83 @@ module.exports = {
         }
 
 
-        console.log(email, getOTP)
-
-       //  let transporter = nodemailer.createTransport({
-       //      host: "smtp.gmail.com",
-       //      port: 587,
-       //      secure: false,
-       //      auth: {
-       //          type: "OAuth2",
-       //          user: process.env.USER_MAIL,
-       //          clientId: process.env.CLIENT_ID,
-       //          clientSecret: process.env.CLIENT_SECRET,
-       //          accessToken: process.env.ACCESS_TOKEN,
-       //          refreshToken: process.env.REFRESH_TOKEN
-       //     },
-       // })
+        let transporter = nodemailer.createTransport({
+            host: "smtp.gmail.com",
+            port: 587,
+            secure: false,
+            auth: {
+                type: "OAuth2",
+                user: process.env.USER_MAIL,
+                clientId: process.env.CLIENT_ID,
+                clientSecret: process.env.CLIENT_SECRET,
+                accessToken: process.env.ACCESS_TOKEN,
+                refreshToken: process.env.REFRESH_TOKEN
+           },
+       })
 
         try {
+            const checkUser = await User.checkUser(email)
 
-          // let info = await transporter.sendMail({
-          //     from: "Administrator <taniboxsandbox@gmail.com>",
-          //     to: email,
-          //     subject: "Reset Password",
-          //     text: "Untuk merubah password, silahkan klik link dibawah ini."
-          // })
+            if(checkUser.length === 0) {
+                error = true
+                misc.response(response, 500, true, 'Oops!, email not exists')
+            }
 
-          misc.response(response, 200, false, 'Successfull email sent')
+            if( error === false) {
+                const data = await User.updateOTP(email, getOTP())
+
+                if(data) {
+                    const getDBOTP = await User.getDBOTP(email)
+
+                    await transporter.sendMail({
+                        from: "Administrator <taniboxsandbox@gmail.com>",
+                        to: email,
+                        subject: "Reset Password",
+                        html: `Untuk merubah password, silahkan masukan kode OTP dibawah ini dibawah ini. <br><b>${getDBOTP[0].OTP}</b>`
+                    })
+                }
+
+                misc.response(response, 200, false, 'Successfull email sent')
+            }
 
         } catch (error) {
+            error = true
             console.error(error)
             misc.response(response, 500, true, 'Server error')
         }
 
+    },
+
+    updatePassword: async (request, response) => {
+        let error = false
+
+        const email = request.body.email
+        const password = request.body.password
+        const password_confirmation = request.body.password_confirmation
+
+        if(password === password_confirmation) {
+            error = false
+
+            try {
+                error = false
+
+                if(error === false) {
+                    const salt = await bcrypt.genSalt(10);
+                    const passwordHash = await bcrypt.hash(password, salt)
+                    await User.updatePassword(passwordHash, email)
+                    misc.response(response, 200, false, 'Successfull update password')
+                }
+            } catch(error) {
+                error = true
+                console.error(error)
+                misc.response(response, 500, true, 'Server error')
+            }
+
+        } else {
+            error = true
+            console.error(error)
+            misc.response(response, 500, true, 'Oops!, password do not match')
+        }
 
     }
 
