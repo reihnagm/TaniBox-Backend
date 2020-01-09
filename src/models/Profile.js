@@ -90,4 +90,43 @@ module.exports = {
         })
     },
 
+    uploadBuyer: (filename, id) => {
+        let query = `UPDATE buyer SET photo = '${filename}' WHERE user_id = ${id}`
+        return new Promise((resolve, reject) => {
+            connection.query(query, (error, result) => {
+                if (error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+
+    uploadSeller: (filename, id) => {
+        let query = `UPDATE seller SET photo_profile = '${filename}' WHERE user_id = ${id}`
+        return new Promise((resolve, reject) => {
+            connection.query(query, (error, result) => {
+                if (error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+
+    uploadStore: (filename, id) => {
+        let query = `UPDATE seller SET photo_store = '${filename}' WHERE user_id = ${id}`
+        return new Promise((resolve, reject) => {
+            connection.query(query, (error, result) => {
+                if (error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+
 }
