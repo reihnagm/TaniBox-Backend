@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const User = require('../models/User')
 const nodemailer  = require('nodemailer')
+const xoauth2 = require('xoauth2')
 const misc = require('../helper/misc')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
@@ -109,15 +110,13 @@ module.exports = {
         const email = request.body.email
 
         let transporter = nodemailer.createTransport({
-            host: "smtp.gmail.com",
-            port: 587,
-            secure: false, // NOTE : TRUE FOR 465, FALSE FOR OTHER PORTS
-                auth: {
-                    type: 'OAuth2',
-                    user: 'reihanagam7@gmail.com',
-                    clientId: '906146853231-nl3sipnlf0shdbh3b38r3gtmksrs61v0.apps.googleusercontent.com',
-                    clientSecret: 'Bm0U1AmoIIEjgb3Sx-fX_txi',
-                }
+            service: "gmail.com",
+                xoauth2: xoauth2.createXOAuth2Generator ({
+                    user: process.env.USER_MAIL,
+                    clientId: "651144799056-s2vbgbo49rtgckvggj0g4m71v5693d4i.apps.googleusercontent.com",
+                    clientSecret: "-ePlZarTeSee-2Mf41FQP_Gy",
+                    refreshToken: "1//049Ti11_APf59CgYIARAAGAQSNwF-L9Irzy4exMjjuPe5QycIcS0TviXIDSPZS-L38zar99oV2x7coFTB3B3rN471oIRCJPrr2XY"
+                })
             })
 
         try {
