@@ -339,7 +339,7 @@ module.exports = {
                 user_id
             }
 
-            misc.response(response, 200, false, 'Successfull add product to wishlist', data)
+            misc.response(response, 200, false, 'Successfull add product in wishlist', data)
         } catch(error) {
             console.error(error)
             misc.response(response, 500, true, 'Server error')
@@ -359,7 +359,7 @@ module.exports = {
                 product_id,
                 user_id
             }
-            misc.response(response, 200, false, 'Successfull delete product to wishlist', data)
+            misc.response(response, 200, false, 'Successfull delete product in wishlist', data)
         } catch(error) {
             console.error(error)
             misc.response(response, 500, true, 'Server error')
