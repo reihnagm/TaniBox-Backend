@@ -109,30 +109,40 @@ module.exports = {
 
         const email = request.body.email
 
-        let transporter = nodemailer.createTransport({
+        const getOTP = () => {
+             const digits = '0123456789';
+             let OTP = '';
+             for (let i = 0; i < 4; i++ ) {
+                 OTP += digits[Math.floor(Math.random() * 10)];
+             }
+             return OTP
+        }
 
-            host: "smtp.gmail.com",
-            port: 587,
-            secure: false,
-            auth: {
-                type: "OAuth2",
-                user: "reihanagam7@gmail.com",
-                clientId: "651144799056-s2vbgbo49rtgckvggj0g4m71v5693d4i.apps.googleusercontent.com",
-                clientSecret: "-ePlZarTeSee-2Mf41FQP_Gy",
-                accessToken: "ya29.Il-4BzNCasPcZsi-lYsRUFFNEhu5Dtb7GmN5QMXBYIlmTVzWR49JprrLYrS1KkRtoGxEpZiowgnJaTCTyS9op-J0Jl6kiW7xsl8X_AKKgEI6dIKpFVJqBKAEYlDV_ohqlg",
-                refreshToken: "1//049Ti11_APf59CgYIARAAGAQSNwF-L9Irzy4exMjjuPe5QycIcS0TviXIDSPZS-L38zar99oV2x7coFTB3B3rN471oIRCJPrr2XY"
-           },
 
-       })
+        console.log(email, getOTP)
+
+       //  let transporter = nodemailer.createTransport({
+       //      host: "smtp.gmail.com",
+       //      port: 587,
+       //      secure: false,
+       //      auth: {
+       //          type: "OAuth2",
+       //          user: process.env.USER_MAIL,
+       //          clientId: process.env.CLIENT_ID,
+       //          clientSecret: process.env.CLIENT_SECRET,
+       //          accessToken: process.env.ACCESS_TOKEN,
+       //          refreshToken: process.env.REFRESH_TOKEN
+       //     },
+       // })
 
         try {
 
-          let info = await transporter.sendMail({
-              from: "Administrator <reihanagam7@gmail.com>",
-              to: "reihanagamsk@gmail.com",
-              subject: "Reset Password",
-              text: "Untuk merubah password, silahkan klik link dibawah ini."
-          })
+          // let info = await transporter.sendMail({
+          //     from: "Administrator <taniboxsandbox@gmail.com>",
+          //     to: email,
+          //     subject: "Reset Password",
+          //     text: "Untuk merubah password, silahkan klik link dibawah ini."
+          // })
 
           misc.response(response, 200, false, 'Successfull email sent')
 
