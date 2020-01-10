@@ -171,7 +171,7 @@ module.exports = {
             }
         }
 
-        const product_id = request.params.product_id
+        const product_id = request.body.product_id
 
         const name = request.body.name
         const description = request.body.description

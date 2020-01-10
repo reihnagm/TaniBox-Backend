@@ -167,14 +167,26 @@ module.exports = {
         let error = false
 
         const email = request.body.email
+        const OTP = request.body.OTP
         const password = request.body.password
         const password_confirmation = request.body.password_confirmation
 
+
         if(password === password_confirmation) {
-            error = false
 
             try {
-                error = false
+
+                const checkDB = await User.checkUser(email)
+
+                if(checkDB.length === null) {
+                    error = true
+                    misc.response(response, 500, true, 'Oops!', 'data not found')
+                }
+
+                if(email && OTP !== checkDB[0].email && checkDB[0].OTP) {
+                    error = true
+                    misc.response(response, 500, true, 'Oops!, email or otp do not match')
+                }
 
                 if(error === false) {
                     const salt = await bcrypt.genSalt(10);
@@ -183,15 +195,14 @@ module.exports = {
                     await User.updateOTPToNull(email)
                     misc.response(response, 200, false, 'Successfull update password')
                 }
-            } catch(error) {
+            } catch(err) {
                 error = true
-                console.error(error)
+                console.error(err)
                 misc.response(response, 500, true, 'Server error')
             }
 
         } else {
             error = true
-            console.error(error)
             misc.response(response, 500, true, 'Oops!, password do not match')
         }
 
