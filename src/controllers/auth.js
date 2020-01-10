@@ -114,12 +114,7 @@ module.exports = {
         const email = request.body.email
 
         const getOTP = () => {
-             const digits = '0123456789'
-             let OTP = ''
-             for (let i = 0; i <= 4; i++) {
-                 OTP += digits[Math.floor(Math.random() * 10)]
-             }
-             return OTP
+             return Math.floor(1000 + Math.random() * 9000)
         }
 
         let transporter = nodemailer.createTransport({
