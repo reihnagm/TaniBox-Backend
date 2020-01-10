@@ -82,7 +82,7 @@ const uploadStore = multer({
     storage: storageStore
 })
 
-Route.get('/', Profile.getProfile)
+Route.get('/:id', Profile.getProfile)
 Route.post('/', Profile.createProfile)
 Route.put('/', Profile.updateProfile)
 Route.delete('/', Profile.deleteProfile)
