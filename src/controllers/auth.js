@@ -186,8 +186,8 @@ module.exports = {
             }
 
             try {
-            
-                if(error === false) {
+
+                if(error !== true) {
                     const salt = await bcrypt.genSalt(10);
                     const passwordHash = await bcrypt.hash(password, salt)
                     await User.updatePassword(passwordHash, email)
