@@ -180,6 +180,8 @@ module.exports = {
 
         const checkDB = await User.checkUser(email)
 
+        console.log(email !== checkDB[0].email +' '+ OTP !== checkDB[0].OTP)
+
         if(checkDB.length === 0) {
             error = true
             misc.response(response, 500, true, 'Oops!', 'email not exists')
