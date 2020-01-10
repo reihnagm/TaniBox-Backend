@@ -177,35 +177,29 @@ module.exports = {
             misc.response(response, 500, true, 'Oops!, password do not match')
         }
 
-        try {
-            const checkDB = await User.checkUser(email)
 
-            if(checkDB.length === 0) {
+        const checkDB = await User.checkUser(email)
+
+        if(checkDB.length === 0) {
+            error = true
+            misc.response(response, 500, true, 'Oops!', 'email not exists')
+        } else {
+            if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
                 error = true
-                return error
-                misc.response(response, 500, true, 'Oops!', 'email not exists')
-            } else {
-                if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
-                    error = true
-                    return error
-                    misc.response(response, 500, true, 'Oops!', 'data not valid')
-                }
-            }
-
-            if(error === false) {
-                const salt = await bcrypt.genSalt(10);
-                const passwordHash = await bcrypt.hash(password, salt)
-                await User.updatePassword(passwordHash, email)
-                await User.updateOTPToNull(email)
-                misc.response(response, 200, false, 'Successfull update password')
+                misc.response(response, 500, true, 'Oops!', 'data not valid')
             }
         }
-         catch(err) {
-            error = true
-            return error
-            console.error(err)
+
+        if(error === false) {
+            const salt = await bcrypt.genSalt(10);
+            const passwordHash = await bcrypt.hash(password, salt)
+            await User.updatePassword(passwordHash, email)
+            await User.updateOTPToNull(email)
+            misc.response(response, 200, false, 'Successfull update password')
+        } else {
             misc.response(response, 500, true, 'Server error')
         }
+
 
     }
 
