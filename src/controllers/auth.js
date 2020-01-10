@@ -177,6 +177,8 @@ module.exports = {
 
                 const checkDB = await User.checkUser(email)
 
+                console.log(checkDB[0].email)
+
                 if(checkDB.length === null) {
                     error = true
                     misc.response(response, 500, true, 'Oops!', 'data not found')
