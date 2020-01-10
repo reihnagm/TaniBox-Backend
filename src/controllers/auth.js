@@ -113,14 +113,6 @@ module.exports = {
 
         const email = request.body.email
 
-        // const OTP = request.body.OTP
-        // const checkOTP = await User.getDBOTP(email)
-        //
-        // if(OTP !== checkOTP[0].OTP) {
-        //     error = true
-        //     misc.response(response, 500, true, 'Oops!, OTP is not match')
-        // }
-
         const getOTP = () => {
              const digits = '0123456789';
              let OTP = '';
@@ -129,7 +121,6 @@ module.exports = {
              }
              return OTP
         }
-
 
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -146,6 +137,7 @@ module.exports = {
        })
 
         try {
+
             const checkUser = await User.checkUser(email)
 
             if(checkUser.length === 0) {
@@ -153,19 +145,18 @@ module.exports = {
                 misc.response(response, 500, true, 'Oops!, email not exists')
             }
 
-            if( error === false) {
-                const data = await User.updateOTP(email, getOTP())
+            if(error === false) {
 
-                if(data) {
-                    const getDBOTP = await User.getDBOTP(email)
+                await User.updateOTP(email, getOTP())
+                const getDBOTP = await User.getDBOTP(email)
 
-                    await transporter.sendMail({
-                        from: "Administrator <taniboxsandbox@gmail.com>",
-                        to: email,
-                        subject: "Reset Password",
-                        html: `Untuk merubah password, silahkan masukan kode OTP dibawah ini dibawah ini. <br><b>${getDBOTP[0].OTP}</b>`
-                    })
-                }
+                await transporter.sendMail({
+                    from: "Administrator <taniboxsandbox@gmail.com>",
+                    to: email,
+                    subject: "Reset Password",
+                    html: `Untuk merubah password, silahkan masukan kode OTP dibawah ini. <br><b>${getDBOTP[0].OTP}</b>`
+                })
+
 
                 misc.response(response, 200, false, 'Successfull email sent')
             }
@@ -179,6 +170,7 @@ module.exports = {
     },
 
     updatePassword: async (request, response) => {
+
         let error = false
 
         const email = request.body.email

@@ -36,7 +36,7 @@ module.exports = {
 
     getSingleProduct: async (request, response) => {
 
-        const product_id = request.body.product_id
+        const product_id = request.params.product_id
 
         try {
             const data = await Product.getSingleProduct(product_id)
@@ -171,7 +171,7 @@ module.exports = {
             }
         }
 
-        const product_id = request.body.product_id
+        const product_id = request.params.product_id
 
         const name = request.body.name
         const description = request.body.description
@@ -318,7 +318,7 @@ module.exports = {
     },
 
     getWishlist: async (request, response) => {
-        
+
         try {
             await Product.getWishlist()
             misc.response(response, 200, false, 'Successfull get product in wishlist')
