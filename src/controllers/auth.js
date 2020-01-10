@@ -171,35 +171,47 @@ module.exports = {
         const password = request.body.password
         const password_confirmation = request.body.password_confirmation
 
-        if(password !== password_confirmation) {
-            error = true
-            return error
-            misc.response(response, 500, true, 'Oops!, password do not match')
+        try {
+            if(password !== password_confirmation) {
+                error = true
+                misc.response(response, 500, true, 'Oops!, password do not match')
+            }
+        } catch (error) {
+            console.error(error.stack)
         }
 
 
         const checkDB = await User.checkUser(email)
 
-        console.log(email !== checkDB[0].email +' '+ OTP !== checkDB[0].OTP)
 
-        if(checkDB.length === 0) {
-            error = true
-            misc.response(response, 500, true, 'Oops!', 'email not exists')
-        } else {
-            if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
+        try {
+
+            if(checkDB.length === 0) {
                 error = true
-                misc.response(response, 500, true, 'Oops!', 'data not valid')
+                misc.response(response, 500, true, 'Oops!', 'email not exists')
+            } else {
+                if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
+                    error = true
+                    misc.response(response, 500, true, 'Oops!', 'data not valid')
+                }
             }
+
+        } catch(error) {
+            console.error(error.stack)
         }
 
-        if(error === false) {
-            const salt = await bcrypt.genSalt(10);
-            const passwordHash = await bcrypt.hash(password, salt)
-            await User.updatePassword(passwordHash, email)
-            await User.updateOTPToNull(email)
-            misc.response(response, 200, false, 'Successfull update password')
-        } else {
-            misc.response(response, 500, true, 'Server error')
+        try {
+            if(error === false) {
+                const salt = await bcrypt.genSalt(10);
+                const passwordHash = await bcrypt.hash(password, salt)
+                await User.updatePassword(passwordHash, email)
+                await User.updateOTPToNull(email)
+                misc.response(response, 200, false, 'Successfull update password')
+            } else {
+                misc.response(response, 500, true, 'Server error')
+            }
+        } catch(error) {
+            console.error(error.stack)
         }
 
 
