@@ -151,6 +151,10 @@ module.exports = {
                     html: `Untuk merubah password, silahkan masukan kode OTP dibawah ini. <br><b>${getDBOTP[0].OTP}</b>`
                 })
 
+                setTimeout(function() {
+                    await User.updateOTPToNull(email)
+                }, 30000)
+
                 misc.response(response, 200, false, 'Successfull email sent')
             }
 
@@ -171,21 +175,18 @@ module.exports = {
         const password = request.body.password
         const password_confirmation = request.body.password_confirmation
 
-
         if(password === password_confirmation) {
 
             try {
 
                 const checkDB = await User.checkUser(email)
 
-                console.log(checkDB)
-
                 if(checkDB.length === null) {
                     error = true
                     misc.response(response, 500, true, 'Oops!', 'data not found')
                 }
 
-                if(email !== checkDB[0].email && OTP !== checkDB[0].OTP) {
+                if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
                     error = true
                     misc.response(response, 500, true, 'Oops!, email or otp do not match')
                 }

@@ -27,7 +27,7 @@ Route.get('/', Product.getAll)
      .post('/add-cart', Product.addCart)
      .post('/wishlist', Product.addWishlist)
      .delete('/:product_id/delete', Product.deleteProduct)
-     .delete('/:product_id/:user_id/delete', Product.deleteWishlist)
-     .delete('/:cart_id/delete', Product.deleteCart)
+     .delete('/:product_id/:user_id/delete-wishlist', Product.deleteWishlist)
+     .delete('/:cart_id/delete-cart', Product.deleteCart)
 
 module.exports = Route
