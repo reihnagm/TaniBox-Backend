@@ -151,10 +151,6 @@ module.exports = {
                     html: `Untuk merubah password, silahkan masukan kode OTP dibawah ini. <br><b>${getDBOTP[0].OTP}</b>`
                 })
 
-                setTimeout(async () => {
-                    await User.updateOTPToNull(email)
-                }, 30000)
-
                 misc.response(response, 200, false, 'Successfull email sent')
             }
 
