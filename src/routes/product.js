@@ -17,17 +17,17 @@ const upload = multer({
 })
 
 Route.get('/', Product.getAll)
-     .get('/single-product', Product.getSingleProduct)
+     .get('/:product_id', Product.getSingleProduct)
      .get('/cart', Product.getCart)
-     .get('/cart-by-user-id', Product.getCartByUserId)
+     .get('/:user_id/cart', Product.getSingleCart)
      .get('/wishlist', Product.getWishlist)
      .post('/', upload.single('photo'), Product.addProduct)
-     .patch('/update-product', upload.single('photo'), Product.updateProduct)
+     .patch('/update', upload.single('photo'), Product.updateProduct)
      .patch('/update-cart', Product.updateCart)
      .post('/add-cart', Product.addCart)
      .post('/wishlist', Product.addWishlist)
-     .delete('/delete-product', Product.deleteProduct)
-     .delete('/delete-wishlist', Product.deleteWishlist)
-     .delete('/delete-cart', Product.deleteCart)
+     .delete('/:product_id/delete', Product.deleteProduct)
+     .delete('/:product_id/:user_id/delete', Product.deleteWishlist)
+     .delete('/:cart_id/delete', Product.deleteCart)
 
 module.exports = Route
