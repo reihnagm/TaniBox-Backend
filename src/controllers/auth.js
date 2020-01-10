@@ -173,22 +173,20 @@ module.exports = {
 
         if(password === password_confirmation) {
 
-            try {
+            const checkDB = await User.checkUser(email)
 
-                const checkDB = await User.checkUser(email)
-
-                console.log(checkDB)
-
-                if(checkDB.length === null) {
+            if(checkDB.length === null) {
+                error = true
+                misc.response(response, 500, true, 'Oops!', 'data not found')
+            } else {
+                if(request.body.email !== checkDB[0].email || request.body.OTP !== checkDB[0].OTP) {
                     error = true
-                    misc.response(response, 500, true, 'Oops!', 'data not found')
+                    misc.response(response, 500, true, 'Oops!, email or otp do not match')
                 }
+            }
 
-                // if(request.body.email !== checkDB[0].email || request.body.OTP !== checkDB[0].OTP) {
-                //     error = true
-                //     misc.response(response, 500, true, 'Oops!, email or otp do not match')
-                // }
-
+            try {
+            
                 if(error === false) {
                     const salt = await bcrypt.genSalt(10);
                     const passwordHash = await bcrypt.hash(password, salt)
