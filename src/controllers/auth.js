@@ -173,14 +173,14 @@ module.exports = {
 
         if(password === password_confirmation) {
 
-            const checkDB = await User.checkUser(email)
-
-            if(checkDB.length === null) {
-                error = true
-                misc.response(response, 500, true, 'Oops!', 'data not found')
-            } 
-
             try {
+
+                const checkDB = await User.checkUser(email)
+
+                if(checkDB.length === null) {
+                    error = true
+                    misc.response(response, 500, true, 'Oops!', 'data not found')
+                } 
 
                 if(error !== true) {
                     const salt = await bcrypt.genSalt(10);
