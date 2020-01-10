@@ -176,14 +176,17 @@ module.exports = {
             misc.response(response, 500, true, 'Oops!, password do not match')
         }
 
+        const checkDB = await User.checkUser(email)
+
+        if(checkDB.length === null) {
+            error = true
+            misc.response(response, 500, true, 'Oops!', 'data not found')
+        }
+
 
         if(error === false) {
             try {
-                const checkDB = await User.checkUser(email)
 
-                if(checkDB.length === null) {
-                    misc.response(response, 500, true, 'Oops!', 'data not found')
-                }
 
                 const salt = await bcrypt.genSalt(10);
                 const passwordHash = await bcrypt.hash(password, salt)
