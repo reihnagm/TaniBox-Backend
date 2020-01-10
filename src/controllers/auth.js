@@ -175,16 +175,14 @@ module.exports = {
 
             try {
 
-                const checkDB = await User.checkUser(email)
-
-                console.log('tset'+ checkDB[0].email)
+                const checkDB = await User.checkUser(request.body.email)
 
                 if(checkDB.length === null) {
                     error = true
                     misc.response(response, 500, true, 'Oops!', 'data not found')
                 }
 
-                if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
+                if(request.body.email !== checkDB[0].email || request.body.OTP !== checkDB[0].OTP) {
                     error = true
                     misc.response(response, 500, true, 'Oops!, email or otp do not match')
                 }
