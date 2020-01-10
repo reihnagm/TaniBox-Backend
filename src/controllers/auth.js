@@ -178,12 +178,7 @@ module.exports = {
             if(checkDB.length === null) {
                 error = true
                 misc.response(response, 500, true, 'Oops!', 'data not found')
-            } else {
-                if(request.body.email !== checkDB[0].email || request.body.OTP !== checkDB[0].OTP) {
-                    error = true
-                    misc.response(response, 500, true, 'Oops!, email or otp do not match')
-                }
-            }
+            } 
 
             try {
 
