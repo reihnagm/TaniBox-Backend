@@ -162,7 +162,7 @@ module.exports = {
 
     },
 
-    updatePassword: async (request, response, next) => {
+    updatePassword: async (request, response) => {
 
         let error = false
 
@@ -176,28 +176,31 @@ module.exports = {
             misc.response(response, 500, true, 'Oops!, password do not match')
         }
 
-        const checkDB = await User.checkUser(email)
+        try {
+            const checkDB = await User.checkUser(email)
 
-        if(checkDB.length === null) {
-            error = true
-            misc.response(response, 500, true, 'Oops!', 'data not found')
-            next()
-        }
+            if(checkDB.length === 0) {
+                error = true
+                misc.response(response, 500, true, 'Oops!', 'data not found')
+            } else {
+                if(request.body.OTP !== checkDB[0].OTP) {
+                    error = true
+                    misc.response(response, 500, true, 'Oops!', 'invalid OTP')
+                }
+            }
 
-
-        if(error === false) {
-            try {
+            if(error === false) {
                 const salt = await bcrypt.genSalt(10);
                 const passwordHash = await bcrypt.hash(password, salt)
                 await User.updatePassword(passwordHash, email)
                 await User.updateOTPToNull(email)
                 misc.response(response, 200, false, 'Successfull update password')
             }
-             catch(err) {
-                error = true
-                console.error(err)
-                misc.response(response, 500, true, 'Server error')
-            }
+        }
+         catch(err) {
+            error = true
+            console.error(err)
+            misc.response(response, 500, true, 'Server error')
         }
 
     }
