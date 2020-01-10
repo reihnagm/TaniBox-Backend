@@ -13,7 +13,7 @@ module.exports = {
 
     getProvince: async (request, response) => {
         try {
-            const {province_id} = request.body
+            const {province_id} = request.query
             const prov = province_id ? `id=${province_id}&` : ''
             const url = `https://api.rajaongkir.com/starter/province?${prov}`
 
@@ -33,7 +33,7 @@ module.exports = {
 
     getCity: async (request, response) => {
         try {
-            const {city_id, province_id} = request.body
+            const {city_id, province_id} = request.query
             const city = city_id ? `id=${city_id}&` : ''
             const prov = province_id ? `province=${province_id}&` : ''
             const url = `https://api.rajaongkir.com/starter/city?${city}${prov}`
@@ -85,7 +85,7 @@ module.exports = {
                 return response.status(400).json({ errors: [{ msg: requireCheck }] });
             }
             
-            const data = { origin: '501', destination: '114', weight: '1700', courier: 'jne' }
+            const data = { origin: origin_city, destination: destination_city, weight: weight, courier: courier }
             const url = `https://api.rajaongkir.com/starter/cost`
             
             await axios.post(url, querystring.stringify(data), config)

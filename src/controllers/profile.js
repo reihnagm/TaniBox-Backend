@@ -7,7 +7,7 @@ const misc = require('../helper/misc')
 module.exports = {
 
     getProfile: async (request, response) => {
-        const userId = request.body.user_id
+        const userId = request.params.id
         try {
             const checkRole = await Profile.checkRole(userId)
             if (checkRole.length === 0) {
@@ -266,7 +266,7 @@ module.exports = {
             }
 
             await Profile.updateProfile(checkRole[0].role, data)
-            misc.response(response, 200, false, 'Edit Success', payload)
+            misc.response(response, 200, false, 'Edit Success')
 
         } catch(error) {
             console.error(error.message);
