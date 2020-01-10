@@ -172,32 +172,31 @@ module.exports = {
         const password_confirmation = request.body.password_confirmation
 
         if(password === password_confirmation) {
-
-            try {
-
-                const checkDB = await User.checkUser(email)
-
-                if(checkDB.length === null) {
-                    error = true
-                    misc.response(response, 500, true, 'Oops!', 'data not found')
-                } 
-
-                if(error !== true) {
-                    const salt = await bcrypt.genSalt(10);
-                    const passwordHash = await bcrypt.hash(password, salt)
-                    await User.updatePassword(passwordHash, email)
-                    await User.updateOTPToNull(email)
-                    misc.response(response, 200, false, 'Successfull update password')
-                }
-            } catch(err) {
-                error = true
-                console.error(err)
-                misc.response(response, 500, true, 'Server error')
-            }
-
+            error = false
         } else {
             error = true
             misc.response(response, 500, true, 'Oops!, password do not match')
+        }
+
+        try {
+            const checkDB = await User.checkUser(email)
+
+            if(checkDB.length === null) {
+                error = true
+                misc.response(response, 500, true, 'Oops!', 'data not found')
+            }
+
+            if(error === true) {
+                const salt = await bcrypt.genSalt(10);
+                const passwordHash = await bcrypt.hash(password, salt)
+                await User.updatePassword(passwordHash, email)
+                await User.updateOTPToNull(email)
+                misc.response(response, 200, false, 'Successfull update password')
+            }
+        } catch(err) {
+            error = true
+            console.error(err)
+            misc.response(response, 500, true, 'Server error')
         }
 
     }
