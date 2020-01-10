@@ -162,7 +162,7 @@ module.exports = {
 
     },
 
-    updatePassword: async (request, response) => {
+    updatePassword: async (request, response, next) => {
 
         let error = false
 
@@ -182,10 +182,12 @@ module.exports = {
             if(checkDB.length === 0) {
                 error = true
                 misc.response(response, 500, true, 'Oops!', 'email not exists')
+                next()
             } else {
                 if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
                     error = true
                     misc.response(response, 500, true, 'Oops!', 'data not valid')
+                    next()
                 } else if(email === checkDB[0].email || OTP === checkDB[0].OTP) {
                     error = false
                     console.log('passed')
