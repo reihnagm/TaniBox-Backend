@@ -188,6 +188,7 @@ module.exports = {
                     misc.response(response, 500, true, 'Oops!', 'data not valid')
                 } else {
                     error = false
+                    console.log('passed')
                 }
             }
 
