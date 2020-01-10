@@ -183,10 +183,10 @@ module.exports = {
                 error = true
                 misc.response(response, 500, true, 'Oops!', 'email not exists')
             } else {
-                if( email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
+                if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
                     error = true
                     misc.response(response, 500, true, 'Oops!', 'data not valid')
-                } else {
+                } else if(email === checkDB[0].email || OTP === checkDB[0].OTP) {
                     error = false
                     console.log('passed')
                 }
