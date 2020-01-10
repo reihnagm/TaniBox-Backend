@@ -1,15 +1,16 @@
 const Notification = require('../models/Notification')
+const misc = require('../helper/misc')
 
 module.exports = {
 
-    addNotification: async (response, request) => {
+    addNotification: async (request, response) => {
 
-        const receive_id = request.body.receive_id
+        const receiver_id = request.body.receiver_id
         const sender_id = request.body.sender_id
         const message = request.body.message
 
         try {
-            await Notification.addNotification(, receive_id, sender_id, message)
+            await Notification.addNotification(receiver_id, sender_id, message)
             misc.response(response, 200, false, 'Successfull add notification')
         } catch(error) {
             console.error(error)
@@ -17,9 +18,10 @@ module.exports = {
         }
 
     },
-    deleteNotification: async(response, request) => {
 
-        const notificaiton_id = request.body.notification_id
+    deleteNotification: async(request, response) => {
+
+        const notification_id = request.params.notification_id
 
         try {
             await Notification.deleteNotification(notification_id)

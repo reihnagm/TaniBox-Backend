@@ -70,33 +70,34 @@ module.exports = {
         const { name, email, password, role } = request.body
 
         try {
-                const user = await User.checkUser(email)
 
-                if (user.length === 0) {
+            const user = await User.checkUser(email)
 
-                    const salt = await bcrypt.genSalt(10);
+            if (user.length === 0) {
 
-                    const passwordHash = await bcrypt.hash(password, salt)
+                const salt = await bcrypt.genSalt(10);
 
-                    const data = { name, email, password:passwordHash, role }
+                const passwordHash = await bcrypt.hash(password, salt)
 
-                    const registered = await User.register(data)
+                const data = { name, email, password:passwordHash, role }
 
-                    const payload = {
-                        user: {
-                            id: registered.insertId
-                        }
+                const registered = await User.register(data)
+
+                const payload = {
+                    user: {
+                        id: registered.insertId
                     }
-
-                    const token = await jwt.sign(payload, process.env.JWT_KEY, { expiresIn: 360000 })
-
-                    misc.response(response, 200, false, 'Successfull register')
-
-                } else {
-
-                    return misc.response(response, 500, true, 'User already exists')
-
                 }
+
+                const token = await jwt.sign(payload, process.env.JWT_KEY, { expiresIn: 360000 })
+
+                misc.response(response, 200, false, 'Successfull register')
+
+            } else {
+
+                return misc.response(response, 500, true, 'User already exists')
+
+            }
 
         } catch(error) {
             console.error(error.message)
@@ -112,7 +113,7 @@ module.exports = {
         const email = request.body.email
 
         const getOTP = () => {
-             return Math.floor(1000 + Math.random() * 9000)
+            return Math.floor(1000 + Math.random() * 9000)
         }
 
         let transporter = nodemailer.createTransport({
@@ -144,12 +145,11 @@ module.exports = {
                 const getDBOTP = await User.getDBOTP(email)
 
                 await transporter.sendMail({
-                    from: "Administrator <taniboxsandbox@gmail.com>",
+                    from: "TaniBox Admin <taniboxsandbox@gmail.com>",
                     to: email,
                     subject: "Reset Password",
                     html: `Untuk merubah password, silahkan masukan kode OTP dibawah ini. <br><b>${getDBOTP[0].OTP}</b>`
                 })
-
 
                 misc.response(response, 200, false, 'Successfull email sent')
             }

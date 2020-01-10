@@ -1,9 +1,9 @@
 const connection = require('../configs/db')
 
 module.exports = {
-    addNotification: (receive_id, sender_id, message) => {
+    addNotification: (receiver_id, sender_id, message) => {
         return new Promise((resolve, reject) => {
-            query = `INSERT INTO notifications (receive_id, sender_id, message) VALUES ('${receive_id}', '${sender_id}', '${message}')`
+            query = `INSERT INTO notifications (receiver_id, sender_id, message) VALUES ('${receiver_id}', '${sender_id}', '${message}')`
             connection.query(query, (error, result) => {
                 if(error) {
                     reject(new Error(error))
