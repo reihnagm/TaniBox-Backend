@@ -177,7 +177,7 @@ module.exports = {
 
                 const checkDB = await User.checkUser(email)
 
-                console.log(checkDB[0].email)
+                console.log('tset'+ checkDB[0].email)
 
                 if(checkDB.length === null) {
                     error = true
