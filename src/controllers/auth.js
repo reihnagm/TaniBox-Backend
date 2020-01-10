@@ -162,7 +162,7 @@ module.exports = {
 
     },
 
-    updatePassword: async (request, response, next) => {
+    updatePassword: async (request, response) => {
 
         let error = false
 
@@ -177,30 +177,28 @@ module.exports = {
         }
 
         try {
-            const checkDB = await User.checkUser(email)
+            await User.checkUser(email).length === 0 ? console.log('Oops!', 'email no exists') : ''
 
-            if(checkDB.length === 0) {
-                error = true
-                misc.response(response, 500, true, 'Oops!', 'email not exists')
-                next()
-            } else {
-                if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
-                    error = true
-                    misc.response(response, 500, true, 'Oops!', 'data not valid')
-                    next()
-                } else if(email === checkDB[0].email || OTP === checkDB[0].OTP) {
-                    error = false
-                    console.log('passed')
-                }
-            }
-
-            if(error === false) {
-                const salt = await bcrypt.genSalt(10);
-                const passwordHash = await bcrypt.hash(password, salt)
-                await User.updatePassword(passwordHash, email)
-                await User.updateOTPToNull(email)
-                misc.response(response, 200, false, 'Successfull update password')
-            }
+            // if(checkDB.length === 0) {
+            //     error = true
+            //     misc.response(response, 500, true, 'Oops!', 'email not exists')
+            // } else {
+            //     if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
+            //         error = true
+            //         misc.response(response, 500, true, 'Oops!', 'data not valid')
+            //     } else if(email === checkDB[0].email || OTP === checkDB[0].OTP) {
+            //         error = false
+            //         console.log('passed')
+            //     }
+            // }
+            //
+            // if(error === false) {
+            //     const salt = await bcrypt.genSalt(10);
+            //     const passwordHash = await bcrypt.hash(password, salt)
+            //     await User.updatePassword(passwordHash, email)
+            //     await User.updateOTPToNull(email)
+            //     misc.response(response, 200, false, 'Successfull update password')
+            // }
         }
          catch(err) {
             error = true
