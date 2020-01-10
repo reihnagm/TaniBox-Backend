@@ -7,7 +7,7 @@ const app = express()
 const port = config.port
 const routerNav = require('./src/index')
 
-app.use(express.static('public'))
+app.use(express.static('public/images'))
 
 app.use(cors())
 
