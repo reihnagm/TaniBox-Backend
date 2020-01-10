@@ -162,7 +162,7 @@ module.exports = {
 
     },
 
-    updatePassword: async (request, response) => {
+    updatePassword: async (request, response, next) => {
 
         let error = false
 
@@ -181,19 +181,18 @@ module.exports = {
         if(checkDB.length === null) {
             error = true
             misc.response(response, 500, true, 'Oops!', 'data not found')
+            next()
         }
 
 
         if(error === false) {
             try {
-
-
                 const salt = await bcrypt.genSalt(10);
                 const passwordHash = await bcrypt.hash(password, salt)
                 await User.updatePassword(passwordHash, email)
                 await User.updateOTPToNull(email)
                 misc.response(response, 200, false, 'Successfull update password')
-                }
+            }
              catch(err) {
                 error = true
                 console.error(err)
