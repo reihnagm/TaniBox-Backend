@@ -17,7 +17,7 @@ const upload = multer({
 })
 
 Route.get('/', Product.getAll)
-     .get('/:product_id', Product.getSingleProduct)
+     .get('/show-product/:product_id', Product.getSingleProduct)
      .get('/cart', Product.getCart)
      .get('/:user_id/cart', Product.getSingleCart)
      .get('/wishlist', Product.getWishlist)
