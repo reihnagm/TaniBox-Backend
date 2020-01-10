@@ -173,6 +173,7 @@ module.exports = {
 
         if(password !== password_confirmation) {
             error = true
+            return error
             misc.response(response, 500, true, 'Oops!, password do not match')
         }
 
@@ -181,12 +182,14 @@ module.exports = {
 
             if(checkDB.length === 0) {
                 error = true
+                return error
                 misc.response(response, 500, true, 'Oops!', 'email not exists')
             } else {
-                // if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
-                //     error = true
-                //     misc.response(response, 500, true, 'Oops!', 'data not valid')
-                // }
+                if(email !== checkDB[0].email || OTP !== checkDB[0].OTP) {
+                    error = true
+                    return error
+                    misc.response(response, 500, true, 'Oops!', 'data not valid')
+                }
             }
 
             if(error === false) {
@@ -199,6 +202,7 @@ module.exports = {
         }
          catch(err) {
             error = true
+            return error
             console.error(err)
             misc.response(response, 500, true, 'Server error')
         }
