@@ -182,15 +182,16 @@ module.exports = {
         if(checkDB.length === 0) {
             error = true
             misc.response(response, 500, true, 'Oops!', 'email not exists')
-        }
+        } else {
+            switch (OTP) {
+                case OTP !== checkDB[0].OTP:
+                    error = true
+                    misc.response(response, 500, true, 'Oops!', 'data not valid')
+                break;
+                default:
 
-        if(!checkDB.length !== 0) {
-            if(OTP !== checkDB[0].OTP) {
-                error = true
-                misc.response(response, 500, true, 'Oops!', 'data not valid')
             }
         }
-
 
         try {
 
