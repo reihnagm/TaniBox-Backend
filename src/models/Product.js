@@ -20,6 +20,7 @@ module.exports = {
             WHERE a.name LIKE '%${search}%'
             AND a.id = b.product_id
             AND a.category_id = '${category}'
+            AND c.id = '${category}'
             ORDER BY a.${sortBy} ${sort} LIMIT ${offset}, ${limit}`
             connection.query(query, (error, result) => {
                 if (error) {
