@@ -5,6 +5,7 @@ const profile = require('./routes/profile')
 const shipment = require('./routes/shipment')
 const transaction = require('./routes/transaction')
 const notification = require('./routes/notification')
+const payment = require('./routes/payment')
 const Route = express.Router()
 
 Route
@@ -14,5 +15,6 @@ Route
     .use('/api/v1/shipment', shipment)
     .use('/api/v1/transaction', transaction)
     .use('/api/v1/notifications', notification)
+    .use('/api/v1/payment', payment)
 
 module.exports = Route
