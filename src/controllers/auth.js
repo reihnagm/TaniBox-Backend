@@ -184,9 +184,9 @@ module.exports = {
                 error = true
                 throw new Error('Oops!, email not exists')
             } else {
-                if(parseInt(OTP) !== checkDB[0].OTP) {
+                if(parseInt(OTP) !== checkDB[0].OTP || email !== checkDB[0].email) {
                     error = true
-                    throw new Error('Oops!, invalid otp')
+                    throw new Error('Oops!, invalid email or otp')
                 }
             }
 
