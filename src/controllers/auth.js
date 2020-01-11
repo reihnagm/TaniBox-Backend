@@ -187,19 +187,21 @@ module.exports = {
                 if(OTP !== checkDB[0].OTP) {
                     error = true
                     throw new Error('Oops!, invalid otp')
-                } else {
-                    error = false
-                    console.log('yay bisa')
+                }
+
+                if(OTP === checkDB[0].OTP) {
+                    error = true
+                    throw new Error('Oops!, mantaps sama')
                 }
             }
 
-            if(error === false) {
-                const salt = await bcrypt.genSalt(10);
-                const passwordHash = await bcrypt.hash(password, salt)
-                await User.updatePassword(passwordHash, email)
-                await User.updateOTPToNull(email)
-                misc.response(response, 200, false, 'Successfull update password')
-            }
+            // if(error === false) {
+            //     const salt = await bcrypt.genSalt(10);
+            //     const passwordHash = await bcrypt.hash(password, salt)
+            //     await User.updatePassword(passwordHash, email)
+            //     await User.updateOTPToNull(email)
+            //     misc.response(response, 200, false, 'Successfull update password')
+            // }
 
         } catch(error) {
             console.error(error.message)
