@@ -155,6 +155,7 @@ module.exports = {
             }
             let requireCheck = []
             let data = {}
+            let nameSend = ''
             if (checkRole[0].role === 'buyer') {
                 const {
                     user_id,
@@ -181,6 +182,8 @@ module.exports = {
                 if (requireCheck.length) {
                     return misc.response(response, 400, false, 'Not Valid', { errors: [{ msg: requireCheck }] })
                 }
+
+                nameSend = name
 
                 data = [
                     province,
@@ -234,6 +237,8 @@ module.exports = {
                     return misc.response(response, 400, false, 'Not Valid', { errors: [{ msg: requireCheck }] })
                 }
 
+                nameSend = name_of_seller
+
                 data = [
                     name_of_store,
                     address1,
@@ -256,7 +261,6 @@ module.exports = {
             }
             
             const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
-            const nameSend = checkRole[0].role === 'buyer' ? name : name_of_seller
 
             if (profile.length === 0) {
                 return misc.response(response, 400, false, 'Profile not found')
