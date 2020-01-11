@@ -190,7 +190,7 @@ module.exports = {
                 }
             }
 
-            console.log(type of OTP)
+            console.log(typeof OTP)
 
             // if(error === false) {
             //     const salt = await bcrypt.genSalt(10);
