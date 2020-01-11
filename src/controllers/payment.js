@@ -22,8 +22,8 @@ module.exports = {
     
             const data = {
                 id_transaction: order_id,
-                va_number: va_numbers.va_number,
-                bank: va_numbers.bank,
+                va_number: va_numbers[0].va_number,
+                bank: va_numbers[0].bank,
                 transaction_time,
                 transaction_status,
                 transaction_id,
