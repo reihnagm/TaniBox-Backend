@@ -187,6 +187,9 @@ module.exports = {
                 if(OTP !== checkDB[0].OTP) {
                     error = true
                     throw new Error('Oops!, invalid otp')
+                } else {
+                    error = false
+                    console.log('yay bisa')
                 }
             }
 
@@ -200,7 +203,7 @@ module.exports = {
 
         } catch(error) {
             console.error(error.message)
-            misc.response(response, 500, true, 'Oops!', `Server error, ${error.message}`)
+            misc.response(response, 500, true, `${error.message}`)
         }
 
 
