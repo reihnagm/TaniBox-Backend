@@ -171,29 +171,19 @@ module.exports = {
         const password = request.body.password
         const password_confirmation = request.body.password_confirmation
 
-
-        if(password !== password_confirmation) {
-            error = true
-            misc.response(response, 500, true, 'Oops!, password do not match')
-        }
-
-        const checkDB = await User.checkUser(email)
-
-        if(checkDB.length === 0) {
-            error = true
-            misc.response(response, 500, true, 'Oops!', 'email not exists')
-        } else {
-            switch (OTP) {
-                case OTP !== checkDB[0].OTP:
-                    error = true
-                    misc.response(response, 500, true, 'Oops!', 'data not valid')
-                break;
-                default:
-
-            }
-        }
-
         try {
+
+            if(password !== password_confirmation) {
+                error = true
+                throw new Error('Oops!, password do not match')
+            }
+
+            const checkDB = await User.checkUser(email)
+
+            if(checkDB.length === 0) {
+                error = true
+                throw new Error('Oops!', 'email not exists')
+            }
 
             if(error === false) {
                 const salt = await bcrypt.genSalt(10);
@@ -204,8 +194,8 @@ module.exports = {
             }
 
         } catch(error) {
-            console.error(error.stack)
-            misc.response(response, 500, true, 'Oops!', 'Server error')
+            console.error(error.message)
+            misc.response(response, 500, true, 'Oops!', `Server error ${error.message}`)
         }
 
 
