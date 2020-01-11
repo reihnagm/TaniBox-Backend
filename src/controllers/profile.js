@@ -158,6 +158,7 @@ module.exports = {
             if (checkRole[0].role === 'buyer') {
                 const {
                     user_id,
+                    name,
                     province,
                     province_name,
                     city,
@@ -169,6 +170,7 @@ module.exports = {
                 } = request.body
 
                 !user_id ? requireCheck.push('user_id is required') : ''
+                !name ? requireCheck.push('name is required') : ''
                 !province ? requireCheck.push('province is required') : ''
                 !city ? requireCheck.push('city is required') : ''
                 !kecamatan ? requireCheck.push('kecamatan is required') : ''
@@ -181,7 +183,6 @@ module.exports = {
                 }
 
                 data = [
-                    name,
                     province,
                     province_name,
                     city,
@@ -195,6 +196,7 @@ module.exports = {
             } else {
                 const {
                     user_id,
+                    name_of_seller,
                     name_of_store,
                     address1,
                     province1,
@@ -214,6 +216,7 @@ module.exports = {
                 } = request.body
 
                 !user_id ? requireCheck.push('user_id is required') : ''
+                !name_of_seller ? requireCheck.push('name_of_seller is required') : ''
                 !name_of_store ? requireCheck.push('name_of_store is required') : ''
                 !address1 ? requireCheck.push('address1 is required') : ''
                 !province1 ? requireCheck.push('province1 is required') : ''
@@ -251,13 +254,15 @@ module.exports = {
                     user_id,
                 ]
             }
-
+            
             const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
+            const nameSend = checkRole[0].role === 'buyer' ? name : name_of_seller
 
             if (profile.length === 0) {
                 return misc.response(response, 400, false, 'Profile not found')
             }
 
+            await Profile.updateName(userId, nameSend)
             await Profile.updateProfile(checkRole[0].role, data)
             redisClient.flushdb()
             misc.response(response, 200, false, 'Success edit transaction')
