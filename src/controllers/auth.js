@@ -182,7 +182,12 @@ module.exports = {
 
             if(checkDB.length === 0) {
                 error = true
-                throw new Error('Oops!', 'email not exists')
+                throw new Error('Oops!, email not exists')
+            } else {
+                if(OTP !== checkDB[0].OTP) {
+                    error = true
+                    throw new Error('Oops!, invalid otp')
+                }
             }
 
             if(error === false) {
@@ -195,7 +200,7 @@ module.exports = {
 
         } catch(error) {
             console.error(error.message)
-            misc.response(response, 500, true, 'Oops!', `Server error ${error.message}`)
+            misc.response(response, 500, true, 'Oops!', `Server error, ${error.message}`)
         }
 
 
