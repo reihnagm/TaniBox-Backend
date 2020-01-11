@@ -16,7 +16,9 @@ module.exports = {
 
     detailBuyer: (id) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT * FROM buyer WHERE user_id = '${id}'`, (error, result) => {
+            connection.query(`SELECT a.*, b.name, b.email
+                FROM buyer a, user b
+                WHERE a.user_id = '${id}' AND b.id = ${id}`, (error, result) => {
                 if (error) {
                     reject(new Error(error))
                 } else {
@@ -28,7 +30,9 @@ module.exports = {
 
     detailSeller: (id) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT * FROM seller WHERE user_id = '${id}'`, (error, result) => {
+            connection.query(`SELECT a.*, b.name, b.email
+                FROM seller a, user b
+                WHERE a.user_id = '${id}' AND b.id = ${id}`, (error, result) => {
                 if (error) {
                     reject(new Error(error))
                 } else {

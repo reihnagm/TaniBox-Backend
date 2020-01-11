@@ -11,16 +11,16 @@ module.exports = {
         try {
             const checkRole = await Profile.checkRole(userId)
             if (checkRole.length === 0) {
-                return misc.response(response, 400, false, 'User not found')
+                throw new Error('User not found')
             }
             const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
             if (profile.length === 0) {
-                return misc.response(response, 400, false, 'Profile not found')
+                throw new Error('Profile not found')
             }
             misc.response(response, 200, false, 'Successfull get single profile', profile)
         } catch(error) {
             console.error(error.message)
-            misc.response(response, 500, true, 'Server error')
+            misc.response(response, 500, true, error.message)
         }
     },
 
@@ -34,7 +34,7 @@ module.exports = {
             let requireCheck = []
             let data = {}
             if (checkRole[0].role === 'buyer') {
-                const { 
+                const {
                     user_id,
                     name,
                     province,
@@ -46,7 +46,7 @@ module.exports = {
                     postal_code,
                     phone,
                 } = request.body
-        
+
                 !user_id ? requireCheck.push('user_id is required') : ''
                 !name ? requireCheck.push('name is required') : ''
                 !province ? requireCheck.push('province is required') : ''
@@ -60,7 +60,7 @@ module.exports = {
                     return misc.response(response, 400, false, 'Not Valid', { errors: [{ msg: requireCheck }] })
                 }
 
-                data = { 
+                data = {
                     name,
                     province,
                     province_name,
@@ -73,7 +73,7 @@ module.exports = {
                     user_id,
                 }
             } else {
-                const { 
+                const {
                     user_id,
                     name_of_seller,
                     name_of_store,
@@ -93,7 +93,7 @@ module.exports = {
                     postal_code2,
                     phone,
                 } = request.body
-        
+
                 !user_id ? requireCheck.push('user_id is required') : ''
                 !name_of_seller ? requireCheck.push('name_of_seller is required') : ''
                 !name_of_store ? requireCheck.push('name_of_store is required') : ''
@@ -113,7 +113,7 @@ module.exports = {
                     return misc.response(response, 400, false, 'Not Valid', { errors: [{ msg: requireCheck }] })
                 }
 
-                data = { 
+                data = {
                     name_of_seller,
                     name_of_store,
                     address1,
@@ -158,7 +158,7 @@ module.exports = {
             let requireCheck = []
             let data = {}
             if (checkRole[0].role === 'buyer') {
-                const { 
+                const {
                     user_id,
                     name,
                     province,
@@ -170,7 +170,7 @@ module.exports = {
                     postal_code,
                     phone,
                 } = request.body
-        
+
                 !user_id ? requireCheck.push('user_id is required') : ''
                 !name ? requireCheck.push('name is required') : ''
                 !province ? requireCheck.push('province is required') : ''
@@ -197,7 +197,7 @@ module.exports = {
                     user_id,
                 ]
             } else {
-                const { 
+                const {
                     user_id,
                     name_of_seller,
                     name_of_store,
@@ -217,7 +217,7 @@ module.exports = {
                     postal_code2,
                     phone,
                 } = request.body
-        
+
                 !user_id ? requireCheck.push('user_id is required') : ''
                 !name_of_seller ? requireCheck.push('name_of_seller is required') : ''
                 !name_of_store ? requireCheck.push('name_of_store is required') : ''
@@ -237,7 +237,7 @@ module.exports = {
                     return misc.response(response, 400, false, 'Not Valid', { errors: [{ msg: requireCheck }] })
                 }
 
-                data = [ 
+                data = [
                     name_of_seller,
                     name_of_store,
                     address1,
@@ -285,7 +285,7 @@ module.exports = {
             if (checkRole.length === 0) {
                 return misc.response(response, 400, false, 'User not found')
             }
-            
+
             const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
 
             if (profile.length === 0) {
