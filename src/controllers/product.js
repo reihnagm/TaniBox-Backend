@@ -12,13 +12,14 @@ module.exports = {
             const search = request.query.search || ''
             const limit = request.query.limit || 10
             const sort = request.query.sort || 'DESC'
+            const category = request.query.category_id || 2
             const sortBy = request.query.sortBy || 'date_updated'
             const offset = (page - 1) * limit
         try {
             const total = await Product.getProductCount()
             const prevPage = page === 1 ? 1 : page - 1
             const nextPage = page === total[0].total ? total[0].total : page + 1
-            const data = await Product.getAll(offset, limit, sort, sortBy, search)
+            const data = await Product.getAll(offset, limit, sort, sortBy, search, category)
 
             let pageDetail = {
                 total: Math.ceil(total[0].total),
