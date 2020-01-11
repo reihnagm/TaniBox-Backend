@@ -187,11 +187,10 @@ module.exports = {
                 if(OTP !== checkDB[0].OTP) {
                     error = true
                     throw new Error('Oops!, invalid otp')
-                } else {
-                    error = true
-                    throw new Error('Oops!, mantaps sama')
                 }
             }
+
+            console.log(type of OTP)
 
             // if(error === false) {
             //     const salt = await bcrypt.genSalt(10);
