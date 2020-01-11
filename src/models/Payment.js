@@ -1,7 +1,7 @@
 const connection = require('../configs/db')
 
 module.exports = {
-    storePayment: (role, data) => {
+    storePayment: (data) => {
         return new Promise((resolve, reject) => {
             connection.query(`INSERT INTO payment SET ?`, data, (error, result) => {
                 if (error) {
