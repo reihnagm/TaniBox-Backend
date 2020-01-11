@@ -187,9 +187,7 @@ module.exports = {
                 if(OTP !== checkDB[0].OTP) {
                     error = true
                     throw new Error('Oops!, invalid otp')
-                }
-
-                if(OTP === checkDB[0].OTP) {
+                } else {
                     error = true
                     throw new Error('Oops!, mantaps sama')
                 }
