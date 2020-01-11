@@ -6,9 +6,12 @@ module.exports = {
     CheckToken: async (req, response, next) => {
         try {
             const email = req.headers.email
+            if(!email) {
+                return misc.response(response, 500, true, 'email headers required')
+            }
             const checkUser = await User.checkUser(email)
             if(checkUser.length === 0) {
-                return misc.response(response, 500, true, 'Oops!, email not exists')
+                return misc.response(response, 500, true, 'Oops!, email not registered')
             }
 
             const token = req.headers.authorization.split(' ')[1]
