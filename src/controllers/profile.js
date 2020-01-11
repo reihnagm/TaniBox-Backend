@@ -39,7 +39,6 @@ module.exports = {
             if (checkRole[0].role === 'buyer') {
                 const {
                     user_id,
-                    name,
                     province,
                     province_name,
                     city,
@@ -51,7 +50,6 @@ module.exports = {
                 } = request.body
 
                 !user_id ? requireCheck.push('user_id is required') : ''
-                !name ? requireCheck.push('name is required') : ''
                 !province ? requireCheck.push('province is required') : ''
                 !city ? requireCheck.push('city is required') : ''
                 !kecamatan ? requireCheck.push('kecamatan is required') : ''
@@ -64,7 +62,6 @@ module.exports = {
                 }
 
                 data = {
-                    name,
                     province,
                     province_name,
                     city,
@@ -78,7 +75,6 @@ module.exports = {
             } else {
                 const {
                     user_id,
-                    name_of_seller,
                     name_of_store,
                     address1,
                     province1,
@@ -98,7 +94,6 @@ module.exports = {
                 } = request.body
 
                 !user_id ? requireCheck.push('user_id is required') : ''
-                !name_of_seller ? requireCheck.push('name_of_seller is required') : ''
                 !name_of_store ? requireCheck.push('name_of_store is required') : ''
                 !address1 ? requireCheck.push('address1 is required') : ''
                 !province1 ? requireCheck.push('province1 is required') : ''
@@ -117,7 +112,6 @@ module.exports = {
                 }
 
                 data = {
-                    name_of_seller,
                     name_of_store,
                     address1,
                     province1,
@@ -164,7 +158,6 @@ module.exports = {
             if (checkRole[0].role === 'buyer') {
                 const {
                     user_id,
-                    name,
                     province,
                     province_name,
                     city,
@@ -176,7 +169,6 @@ module.exports = {
                 } = request.body
 
                 !user_id ? requireCheck.push('user_id is required') : ''
-                !name ? requireCheck.push('name is required') : ''
                 !province ? requireCheck.push('province is required') : ''
                 !city ? requireCheck.push('city is required') : ''
                 !kecamatan ? requireCheck.push('kecamatan is required') : ''
@@ -203,7 +195,6 @@ module.exports = {
             } else {
                 const {
                     user_id,
-                    name_of_seller,
                     name_of_store,
                     address1,
                     province1,
@@ -223,7 +214,6 @@ module.exports = {
                 } = request.body
 
                 !user_id ? requireCheck.push('user_id is required') : ''
-                !name_of_seller ? requireCheck.push('name_of_seller is required') : ''
                 !name_of_store ? requireCheck.push('name_of_store is required') : ''
                 !address1 ? requireCheck.push('address1 is required') : ''
                 !province1 ? requireCheck.push('province1 is required') : ''
@@ -242,7 +232,6 @@ module.exports = {
                 }
 
                 data = [
-                    name_of_seller,
                     name_of_store,
                     address1,
                     province1,
