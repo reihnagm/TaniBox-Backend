@@ -55,12 +55,25 @@ module.exports = {
     },
 
     updateProfile: (role, data) => {
-        let query = 'UPDATE  buyer  SET  name = ?, province = ?, province_name = ?, city = ?, city_name = ?, kecamatan = ?, address = ?, postal_code = ?, phone = ? WHERE user_id = ?'
+        let query = 'UPDATE  buyer  SET  province = ?, province_name = ?, city = ?, city_name = ?, kecamatan = ?, address = ?, postal_code = ?, phone = ? WHERE user_id = ?'
         if (role === 'seller') {
-            query = 'UPDATE  seller  SET  name_of_seller = ?, name_of_store = ?, address1 = ?, province1 = ?, province1_name = ?, city1 = ?, city1_name = ?, kecamatan1 = ?, postal_code1 = ?, address2 = ?, province2 = ?, province2_name = ?, city2 = ?, city2_name = ?, kecamatan2 = ?, postal_code2 = ?, phone = ? WHERE user_id = ?'
+            query = 'UPDATE  seller  SET  name_of_store = ?, address1 = ?, province1 = ?, province1_name = ?, city1 = ?, city1_name = ?, kecamatan1 = ?, postal_code1 = ?, address2 = ?, province2 = ?, province2_name = ?, city2 = ?, city2_name = ?, kecamatan2 = ?, postal_code2 = ?, phone = ? WHERE user_id = ?'
         }
         return new Promise((resolve, reject) => {
             connection.query(query, data, (error, result) => {
+                if (error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
+
+    updateName: (user_id ,name) => {
+        let query = `UPDATE  user  SET  name = '${name}' WHERE id = ${user_id}`
+        return new Promise((resolve, reject) => {
+            connection.query(query, (error, result) => {
                 if (error) {
                     reject(new Error(error))
                 } else {
