@@ -14,6 +14,9 @@ module.exports = {
                 throw new Error('User not found')
             }
             const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
+
+            console.log(profile)
+
             if (profile.length === 0) {
                 throw new Error('Profile not found')
             }
