@@ -43,8 +43,7 @@ module.exports = {
             const payload = {
                 user: {
                     id: user[0].id,
-                    email: user[0].email,
-                    role: user[0].role
+                    email: user[0].email
                 }
             }
 
@@ -52,6 +51,7 @@ module.exports = {
 
             const data = {
                 token,
+                id: user[0].id,
                 email: user[0].email,
                 role: user[0].role
             }
