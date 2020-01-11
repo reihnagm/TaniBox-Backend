@@ -13,12 +13,13 @@ module.exports = {
             })
         })
     },
-    getAll: (offset, limit, sort, sortBy, search) => {
+    getAll: (offset, limit, sort, sortBy, search, category) => {
         return new Promise((resolve, reject) => {
             const query = `SELECT a.*, b.*
-            FROM products a, photo_product b
+            FROM products a, photo_product b, category c
             WHERE a.name LIKE '%${search}%'
             AND a.id = b.product_id
+            AND a.category_id = '${category}'
             ORDER BY a.${sortBy} ${sort} LIMIT ${offset}, ${limit}`
             connection.query(query, (error, result) => {
                 if (error) {
