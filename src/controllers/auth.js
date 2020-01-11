@@ -43,9 +43,7 @@ module.exports = {
             const payload = {
                 user: {
                     id: user[0].id,
-                    name: user[0].name,
-                    email: user[0].email,
-                    role: user[0].role
+                    email: user[0].email
                 }
             }
 
@@ -53,7 +51,7 @@ module.exports = {
 
             const data = {
                 token,
-                name: user[0].name,
+                id: user[0].id,
                 email: user[0].email,
                 role: user[0].role
             }
@@ -72,33 +70,34 @@ module.exports = {
         const { name, email, password, role } = request.body
 
         try {
-                const user = await User.checkUser(email)
 
-                if (user.length === 0) {
+            const user = await User.checkUser(email)
 
-                    const salt = await bcrypt.genSalt(10);
+            if (user.length === 0) {
 
-                    const passwordHash = await bcrypt.hash(password, salt)
+                const salt = await bcrypt.genSalt(10);
 
-                    const data = { name, email, password:passwordHash, role }
+                const passwordHash = await bcrypt.hash(password, salt)
 
-                    const registered = await User.register(data)
+                const data = { name, email, password:passwordHash, role }
 
-                    const payload = {
-                        user: {
-                            id: registered.insertId
-                        }
+                const registered = await User.register(data)
+
+                const payload = {
+                    user: {
+                        id: registered.insertId
                     }
-
-                    const token = await jwt.sign(payload, process.env.JWT_KEY, { expiresIn: 360000 })
-
-                    misc.response(response, 200, false, 'Successfull register')
-
-                } else {
-
-                    return misc.response(response, 500, true, 'User already exists')
-
                 }
+
+                const token = await jwt.sign(payload, process.env.JWT_KEY, { expiresIn: 360000 })
+
+                misc.response(response, 200, false, 'Successfull register')
+
+            } else {
+
+                return misc.response(response, 500, true, 'User already exists')
+
+            }
 
         } catch(error) {
             console.error(error.message)
@@ -112,23 +111,10 @@ module.exports = {
         let error = false
 
         const email = request.body.email
-        const OTP = request.body.OTP
-        const checkOTP = await User.getDBOTP(email)
-
-        if(OTP !== checkOTP[0].OTP) {
-            error = true
-            misc.response(response, 500, true, 'Oops!, OTP is not match')
-        }
 
         const getOTP = () => {
-             const digits = '0123456789';
-             let OTP = '';
-             for (let i = 0; i < 4; i++ ) {
-                 OTP += digits[Math.floor(Math.random() * 10)];
-             }
-             return OTP
+            return Math.floor(1000 + Math.random() * 9000)
         }
-
 
         let transporter = nodemailer.createTransport({
             host: "smtp.gmail.com",
@@ -145,6 +131,7 @@ module.exports = {
        })
 
         try {
+
             const checkUser = await User.checkUser(email)
 
             if(checkUser.length === 0) {
@@ -152,61 +139,70 @@ module.exports = {
                 misc.response(response, 500, true, 'Oops!, email not exists')
             }
 
-            if( error === false) {
-                const data = await User.updateOTP(email, getOTP())
+            if(error === false) {
 
-                if(data) {
-                    const getDBOTP = await User.getDBOTP(email)
+                await User.updateOTP(email, getOTP())
+                const getDBOTP = await User.getDBOTP(email)
 
-                    await transporter.sendMail({
-                        from: "Administrator <taniboxsandbox@gmail.com>",
-                        to: email,
-                        subject: "Reset Password",
-                        html: `Untuk merubah password, silahkan masukan kode OTP dibawah ini dibawah ini. <br><b>${getDBOTP[0].OTP}</b>`
-                    })
-                }
+                await transporter.sendMail({
+                    from: "TaniBox Admin <taniboxsandbox@gmail.com>",
+                    to: email,
+                    subject: "Reset Password",
+                    html: `Untuk merubah password, silahkan masukan kode OTP dibawah ini. <br><b>${getDBOTP[0].OTP}</b>`
+                })
 
                 misc.response(response, 200, false, 'Successfull email sent')
             }
 
-        } catch (error) {
+        } catch (err) {
             error = true
-            console.error(error)
+            console.error(err)
             misc.response(response, 500, true, 'Server error')
         }
 
     },
 
     updatePassword: async (request, response) => {
+
         let error = false
 
         const email = request.body.email
+        const OTP = request.body.OTP
         const password = request.body.password
         const password_confirmation = request.body.password_confirmation
 
-        if(password === password_confirmation) {
-            error = false
+        try {
 
-            try {
-                error = false
-
-                if(error === false) {
-                    const salt = await bcrypt.genSalt(10);
-                    const passwordHash = await bcrypt.hash(password, salt)
-                    await User.updatePassword(passwordHash, email)
-                    misc.response(response, 200, false, 'Successfull update password')
-                }
-            } catch(error) {
+            if(password !== password_confirmation) {
                 error = true
-                console.error(error)
-                misc.response(response, 500, true, 'Server error')
+                throw new Error('Oops!, password do not match')
             }
 
-        } else {
-            error = true
-            console.error(error)
-            misc.response(response, 500, true, 'Oops!, password do not match')
+            const checkDB = await User.checkUser(email)
+
+            if(checkDB.length === 0) {
+                error = true
+                throw new Error('Oops!, email not exists')
+            } else {
+                if(parseInt(OTP) !== checkDB[0].OTP) {
+                    error = true
+                    throw new Error('Oops!, invalid otp')
+                }
+            }
+
+            if(error === false) {
+                const salt = await bcrypt.genSalt(10);
+                const passwordHash = await bcrypt.hash(password, salt)
+                await User.updatePassword(passwordHash, email)
+                await User.updateOTPToNull(email)
+                misc.response(response, 200, false, 'Successfull update password')
+            }
+
+        } catch(error) {
+            console.error(error.message)
+            misc.response(response, 500, true, `${error.message}`)
         }
+
 
     }
 

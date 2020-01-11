@@ -67,6 +67,17 @@ module.exports = {
             })
         })
     },
+    updateOTPToNull: (email) => {
+        return new Promise((resolve, reject) => {
+            connection.query(`UPDATE user SET OTP = NULL WHERE email = '${email}'`, (error, result) => {
+                if(error) {
+                    reject(new Error(error))
+                } else {
+                    resolve(result)
+                }
+            })
+        })
+    },
     updatePassword: (passwordHash, email) => {
         return new Promise((resolve, reject) => {
             query = `UPDATE user SET password = '${passwordHash}' WHERE email = '${email}'`

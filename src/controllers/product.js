@@ -38,7 +38,7 @@ module.exports = {
 
     getSingleProduct: async (request, response) => {
 
-        const product_id = request.body.product_id
+        const product_id = request.params.product_id
 
         try {
             const data = await Product.getSingleProduct(product_id)
@@ -238,9 +238,9 @@ module.exports = {
     },
 
 
-    getCartByUserId: async (request, response) => {
+    getSingleCart: async (request, response) => {
 
-        const user_id = request.body.user_id
+        const user_id = request.params.user_id
 
         try {
             const data = await Product.getCartByUserId(user_id)
@@ -281,7 +281,7 @@ module.exports = {
 
     deleteCart: async (request, response) => {
 
-        const cart_id = request.body.cart_id
+        const cart_id = request.params.cart_id
 
         try {
             await Product.deleteCart(cart_id)
@@ -323,13 +323,15 @@ module.exports = {
     },
 
     getWishlist: async (request, response) => {
+
         try {
-            await Product.getWishlist()
-            misc.response(response, 200, false, 'Successfull get product in wishlist')
+            const data = await Product.getWishlist()
+            misc.response(response, 200, false, 'Successfull get product in wishlist', data)
         } catch(error) {
             console.error(error)
             misc.response(response, 500, true, 'Server error')
         }
+
     },
 
     addWishlist: async (request, response) => {
@@ -355,8 +357,8 @@ module.exports = {
 
     deleteWishlist: async (request, response) => {
 
-        const product_id = request.body.product_id
-        const user_id = request.body.user_id
+        const product_id = request.params.product_id
+        const user_id = request.params.user_id
 
         try {
             await Product.deleteWishlist(product_id, user_id)

@@ -67,7 +67,7 @@ module.exports = {
             category_id = '${category_id}',
             user_id = '${user_id}'
             WHERE id = '${product_id}'`
-            
+
             connection.query(query, (error, result) => {
                 if(error) {
                     reject(new Error(error))
@@ -197,8 +197,10 @@ module.exports = {
     },
     getWishlist: () => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT a.*, b.* FROM products a
-            INNER JOIN wishlist b ON a.id = b.product_id AND a.user_id  = b.user_id`
+            const query = `SELECT a.*, b.* FROM
+            products a INNER JOIN
+            wishlist b ON a.id = b.product_id
+            AND a.user_id  = b.user_id`
             connection.query(query, (error, result) => {
                 if(error) {
                     reject(new Error(error))
