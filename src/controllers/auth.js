@@ -184,21 +184,19 @@ module.exports = {
                 error = true
                 throw new Error('Oops!, email not exists')
             } else {
-                if(OTP !== checkDB[0].OTP) {
+                if(parseInt(OTP) !== checkDB[0].OTP) {
                     error = true
                     throw new Error('Oops!, invalid otp')
                 }
             }
 
-            console.log(typeof OTP)
-
-            // if(error === false) {
-            //     const salt = await bcrypt.genSalt(10);
-            //     const passwordHash = await bcrypt.hash(password, salt)
-            //     await User.updatePassword(passwordHash, email)
-            //     await User.updateOTPToNull(email)
-            //     misc.response(response, 200, false, 'Successfull update password')
-            // }
+            if(error === false) {
+                const salt = await bcrypt.genSalt(10);
+                const passwordHash = await bcrypt.hash(password, salt)
+                await User.updatePassword(passwordHash, email)
+                await User.updateOTPToNull(email)
+                misc.response(response, 200, false, 'Successfull update password')
+            }
 
         } catch(error) {
             console.error(error.message)
