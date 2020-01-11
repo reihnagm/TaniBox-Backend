@@ -19,7 +19,7 @@ module.exports = {
             FROM products a, photo_product b
             WHERE a.name LIKE '%${search}%'
             AND a.id = b.product_id
-            ORDER BY ${a.sortBy} ${sort} LIMIT ${offset}, ${limit}`
+            ORDER BY a.${sortBy} ${sort} LIMIT ${offset}, ${limit}`
             connection.query(query, (error, result) => {
                 if (error) {
                     reject(new Error(error))
