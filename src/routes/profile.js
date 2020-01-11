@@ -1,6 +1,8 @@
 const express = require('express')
 const multer = require('multer')
 const Profile = require('../controllers/profile')
+const redis =   require('../helper/redis')
+const jwtCheck = require('../helper/jwt')
 const Route = express.Router()
 const uuidv1 = require('uuid/v1')
 
@@ -82,12 +84,12 @@ const uploadStore = multer({
     storage: storageStore
 })
 
-Route.get('/:id', Profile.getProfile)
-Route.post('/', Profile.createProfile)
-Route.put('/', Profile.updateProfile)
-Route.delete('/', Profile.deleteProfile)
-Route.put('/upload-buyer', uploadBuyer.single('image'), Profile.uploadBuyer)
-Route.put('/upload-seller', uploadSeller.single('image'), Profile.uploadSeller)
-Route.put('/upload-store', uploadStore.single('image'), Profile.uploadStore)
+Route.get('/:id', redis.checkCache, Profile.getProfile)
+Route.post('/', jwtCheck.CheckToken, Profile.createProfile)
+Route.patch('/', jwtCheck.CheckToken, Profile.updateProfile)
+Route.delete('/', jwtCheck.CheckToken, Profile.deleteProfile)
+Route.patch('/upload-buyer', jwtCheck.CheckToken, uploadBuyer.single('image'), Profile.uploadBuyer)
+Route.patch('/upload-seller', jwtCheck.CheckToken, uploadSeller.single('image'), Profile.uploadSeller)
+Route.patch('/upload-store', jwtCheck.CheckToken, uploadStore.single('image'), Profile.uploadStore)
 
 module.exports = Route

@@ -19,11 +19,10 @@ module.exports = {
 
             await axios.get(url, config)
             .then(function (res) {
-                return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results, request.originalUrl)
+                return misc.response(response, 200, false, 'Successfull get province', res.data.rajaongkir.results, request.originalUrl)
             })
             .catch(function (error) {
-                // handle error
-                console.log(error);
+                return misc.response(response, 500, false, 'shipment key has reach daily limit')
             })
         } catch(error) {
             console.error(error.message)
@@ -37,17 +36,17 @@ module.exports = {
             const city = city_id ? `id=${city_id}&` : ''
             const prov = province_id ? `province=${province_id}&` : ''
             const url = `https://api.rajaongkir.com/starter/city?${city}${prov}`
+            // console.log(config);
             
             await axios.get(url, config)
             .then(function (res) {
-                return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results)
+                return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results, request.originalUrl)
             })
             .catch(function (error) {
-                // handle error
-                console.log(error);
+                return misc.response(response, 500, false, 'shipment key has reach daily limit')
             })
         } catch(error) {
-            console.error(error.message)
+            // console.error(error.message)
             misc.response(response, 500, true, 'Server error')
         }
     },
@@ -59,7 +58,7 @@ module.exports = {
                 { id: 'tiki', name: 'TIKI' },
                 { id: 'pos', name: 'Pos Indonesia' },
               ];
-            return response.status(200).json({data: items})
+            return misc.response(response, 200, false, 'Successfull', {couriers: items}, request.originalUrl)
         } catch(error) {
             console.error(error.message)
             misc.response(response, 500, true, 'Server error')
@@ -93,8 +92,7 @@ module.exports = {
                 return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results)
             })
             .catch(function (error) {
-                // handle error
-                console.log(error);
+                return misc.response(response, 500, false, 'shipment key has reach daily limit')
             })
         } catch(error) {
             console.error(error.message)
