@@ -43,6 +43,7 @@ module.exports = {
                     id: created.insertId
                 }
             }
+            console.log(id);
             return misc.response(response, 200, false, 'Successfull', payload)
         } catch(error) {
             console.error(error.message);
