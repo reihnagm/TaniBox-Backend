@@ -8,7 +8,8 @@ module.exports = {
 
     redisClient.get(key, (err, data) => {
       if (err) {
-        return misc.response((res), 500, true, 'Redis error', err)
+        console.log('redis not connected');
+        next()
       }
       if (data != null) {
         misc.response((res), 200, false, 'Successfull - cache', JSON.parse(data))

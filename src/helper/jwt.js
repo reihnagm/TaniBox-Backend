@@ -13,10 +13,10 @@ module.exports = {
 
             const token = req.headers.authorization.split(' ')[1]
             const decodeToken = jwt.verify(token, process.env.JWT_KEY)
-            if (decodeToken && decodeToken.email === email) {
+            if (decodeToken && decodeToken.user.email === email) {
                 next()
             } else {
-                return misc.response(response, 500, true, 'Invalid "Email" Token')
+                return misc.response(response, 500, true, 'Invalid Email Token')
             }
         } catch (err) {
             return misc.response(response, 500, true, 'Invalid Token')

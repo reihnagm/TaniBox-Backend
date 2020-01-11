@@ -1,14 +1,8 @@
-require('dotenv').config()
 const Transaction = require('../models/Transaction')
 const Profile = require('../models/Profile')
 const misc = require('../helper/misc')
-const axios = require('axios');
-const config = {
-    headers: {
-      "content-type": "application/x-www-form-urlencoded",
-      "key":  process.env.SHIPMENT_KEY,
-    }
-}
+const redis = require('redis')
+const redisClient = redis.createClient()
 
 module.exports = {
     showTransactionBySeller: async (request, response) => {
@@ -33,7 +27,7 @@ module.exports = {
                 i++
             }
             
-            misc.response(response, 200, false, 'Success', data)
+            misc.response(response, 200, false, 'Success', data, request.originalUrl)
         } catch(error) {
             console.error(error.message);
             misc.response(response, 500, true, 'Server error') 
@@ -62,7 +56,7 @@ module.exports = {
                 i++
             }
             
-            misc.response(response, 200, false, 'Success', data)
+            misc.response(response, 200, false, 'Success', data, request.originalUrl)
         } catch(error) {
             console.error(error.message);
             misc.response(response, 500, true, 'Server error') 
@@ -83,7 +77,7 @@ module.exports = {
                 shipment,
                 products
             }
-            misc.response(response, 200, false, 'Success', result)
+            misc.response(response, 200, false, 'Success', result, request.originalUrl)
         } catch(error) {
             console.error(error.message);
             misc.response(response, 500, true, 'Server error') 

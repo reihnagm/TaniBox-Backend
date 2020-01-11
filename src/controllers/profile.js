@@ -1,8 +1,8 @@
-require('dotenv').config()
-
 const Profile = require('../models/Profile')
 const fs = require('fs-extra')
 const misc = require('../helper/misc')
+const redis = require('redis')
+const redisClient = redis.createClient()
 
 module.exports = {
 
@@ -17,7 +17,7 @@ module.exports = {
             if (profile.length === 0) {
                 return misc.response(response, 400, false, 'Profile not found')
             }
-            misc.response(response, 200, false, 'Successfull get single profile', profile)
+            misc.response(response, 200, false, 'Successfull get single profile', profile, request.originalUrl)
         } catch(error) {
             console.error(error.message)
             misc.response(response, 500, true, 'Server error')
@@ -141,7 +141,8 @@ module.exports = {
                     id: created.insertId
                 }
             }
-            misc.response(response, 200, false, 'Create Success', payload)
+            redisClient.flushdb()
+            misc.response(response, 200, false, 'Success create transaction', payload)
         } catch(error) {
             console.error(error.message);
             misc.response(response, 500, true, 'Server error')
@@ -266,7 +267,8 @@ module.exports = {
             }
 
             await Profile.updateProfile(checkRole[0].role, data)
-            misc.response(response, 200, false, 'Edit Success')
+            redisClient.flushdb()
+            misc.response(response, 200, false, 'Success edit transaction')
 
         } catch(error) {
             console.error(error.message);
@@ -293,8 +295,8 @@ module.exports = {
             }
 
             checkRole[0].role === 'buyer' ? await Profile.deleteBuyer(userId) : await Profile.deleteSeller(userId)
-
-                misc.response(response, 200, false, 'profile deleted')
+            redisClient.flushdb()
+            misc.response(response, 200, false, 'Success delete profile')
 
         } catch(error) {
             console.error(error.message)
@@ -350,7 +352,8 @@ module.exports = {
         try {
             if(error === false) {
                 await Profile.uploadBuyer(photo, user_id)
-                misc.response(response, 200, false, 'upload success')
+                redisClient.flushdb()
+                misc.response(response, 200, false, 'Success upload profile buyer')
             }
         } catch(error) {
             console.error(error)
@@ -407,7 +410,8 @@ module.exports = {
         try {
             if(error === false) {
                 await Profile.uploadSeller(photo, user_id)
-                misc.response(response, 200, false, 'upload success')
+                redisClient.flushdb()
+                misc.response(response, 200, false, 'Success upload profile seller')
             }
         } catch(error) {
             console.error(error)
@@ -464,7 +468,8 @@ module.exports = {
         try {
             if(error === false) {
                 await Profile.uploadStore(photo, user_id)
-                misc.response(response, 200, false, 'upload success')
+                redisClient.flushdb()
+                misc.response(response, 200, false, 'success upload store image')
             }
         } catch(error) {
             console.error(error)

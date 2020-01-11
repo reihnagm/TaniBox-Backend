@@ -1,6 +1,8 @@
 const Product = require('../models/Product')
 const fs = require('fs-extra')
 const misc = require('../helper/misc')
+const redis = require('redis')
+const redisClient = redis.createClient()
 
 module.exports = {
 
@@ -26,7 +28,7 @@ module.exports = {
                 prevLink: `http://34.202.135.29:4000${request.originalUrl.replace('page=' + page, 'page=' + prevPage)}`
             }
 
-            misc.responsePagination(response, 200, false, 'Successfull get all data', pageDetail, data)
+            misc.responsePagination(response, 200, false, 'Successfull get all data', pageDetail, data, request.originalUrl)
         } catch (error) {
             console.error(error)
             misc.response(response, 500, true, 'Server error')
@@ -40,7 +42,7 @@ module.exports = {
 
         try {
             const data = await Product.getSingleProduct(product_id)
-            misc.response(response, 200, false, 'Successfull get single product', data)
+            misc.response(response, 200, false, 'Successfull get single product', data, request.originalUrl)
 
         } catch(error) {
             console.error(error)
@@ -118,7 +120,7 @@ module.exports = {
                     product_id,
                     photo
                 }
-
+                redisClient.flushdb()
                 misc.response(response, 200, false, 'Successfull create product', data)
             }
         } catch(error) {
@@ -198,7 +200,7 @@ module.exports = {
                     product_id,
                     photo
                 }
-
+                redisClient.flushdb()
                 misc.response(response, 200, false, 'Successfull update product', data)
             }
         } catch(error) {
@@ -214,6 +216,7 @@ module.exports = {
 
         try {
             await Product.deleteProduct(product_id)
+            redisClient.flushdb()
             misc.response(response, 200, false, 'Successfull delete product')
         } catch(error) {
             console.error(error)
@@ -226,7 +229,7 @@ module.exports = {
 
         try {
             const data = await Product.getCart()
-            misc.response(response, 200, false, 'Successfull get cart', data)
+            misc.response(response, 200, false, 'Successfull get cart', data, request.originalUrl)
         } catch(error) {
             console.error(error)
             misc.response(response, 500, true, 'Server error')
@@ -241,7 +244,7 @@ module.exports = {
 
         try {
             const data = await Product.getCartByUserId(user_id)
-            misc.response(response, 200, false, 'Successfull get cart by user id', data)
+            misc.response(response, 200, false, 'Successfull get cart by user id', data, request.originalUrl)
         } catch (error) {
             console.error(error)
             misc.response(response, 500, true, 'Server error')
@@ -267,6 +270,7 @@ module.exports = {
 
         try {
             await Product.addCart(unit_price, qty, total, product_id, user_id)
+            redisClient.flushdb()
             misc.response(response, 200, false, 'Successfull add cart', data)
         } catch(error) {
             console.error(error)
@@ -281,6 +285,7 @@ module.exports = {
 
         try {
             await Product.deleteCart(cart_id)
+            redisClient.flushdb()
             misc.response(response, 200, false, 'Successfull delete cart')
         } catch(error) {
             console.error(error)
@@ -309,7 +314,7 @@ module.exports = {
                 product_id,
                 user_id
             }
-
+            redisClient.flushdb()
             misc.response(response, 200, false, 'Successfull update cart', data)
         } catch (error) {
             misc.response(response, 500, true, 'Server error')
@@ -339,7 +344,7 @@ module.exports = {
                 product_id,
                 user_id
             }
-
+            redisClient.flushdb()
             misc.response(response, 200, false, 'Successfull add product in wishlist', data)
         } catch(error) {
             console.error(error)

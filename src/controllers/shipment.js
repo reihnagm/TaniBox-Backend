@@ -19,7 +19,7 @@ module.exports = {
 
             await axios.get(url, config)
             .then(function (res) {
-                return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results, request.originalUrl)
+                return misc.response(response, 200, false, 'Successfull get province', res.data.rajaongkir.results, request.originalUrl)
             })
             .catch(function (error) {
                 // handle error
@@ -40,7 +40,7 @@ module.exports = {
             
             await axios.get(url, config)
             .then(function (res) {
-                return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results)
+                return misc.response(response, 200, false, 'Successfull', res.data.rajaongkir.results, request.originalUrl)
             })
             .catch(function (error) {
                 // handle error
@@ -59,7 +59,7 @@ module.exports = {
                 { id: 'tiki', name: 'TIKI' },
                 { id: 'pos', name: 'Pos Indonesia' },
               ];
-            return response.status(200).json({data: items})
+            return misc.response(response, 200, false, 'Successfull', {couriers: items}, request.originalUrl)
         } catch(error) {
             console.error(error.message)
             misc.response(response, 500, true, 'Server error')

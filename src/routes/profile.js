@@ -1,6 +1,7 @@
 const express = require('express')
 const multer = require('multer')
 const Profile = require('../controllers/profile')
+const redis =   require('../helper/redis')
 const Route = express.Router()
 const uuidv1 = require('uuid/v1')
 
@@ -82,7 +83,7 @@ const uploadStore = multer({
     storage: storageStore
 })
 
-Route.get('/:id', Profile.getProfile)
+Route.get('/:id', redis.checkCache, Profile.getProfile)
 Route.post('/', Profile.createProfile)
 Route.put('/', Profile.updateProfile)
 Route.delete('/', Profile.deleteProfile)
