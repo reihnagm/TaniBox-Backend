@@ -137,7 +137,7 @@ module.exports = {
                 }
             }
             redisClient.flushdb()
-            misc.response(response, 200, false, 'Success create transaction', payload)
+            misc.response(response, 200, false, 'Success create profile', payload)
         } catch(error) {
             console.error(error.message);
             misc.response(response, 500, true, 'Server error')
@@ -267,7 +267,7 @@ module.exports = {
             await Profile.updateName(userId, nameSend)
             await Profile.updateProfile(checkRole[0].role, data)
             redisClient.flushdb()
-            misc.response(response, 200, false, 'Success edit transaction')
+            misc.response(response, 200, false, 'Success edit profile')
 
         } catch(error) {
             console.error(error.message);

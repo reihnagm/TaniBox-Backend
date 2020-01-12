@@ -1,4 +1,5 @@
 const misc = require('../helper/misc')
+const Transaction = require('../models/Transaction')
 const Payment = require('../models/Payment')
 
 module.exports = {
@@ -22,8 +23,8 @@ module.exports = {
     
             const data = {
                 id_transaction: order_id,
-                va_number: va_numbers.va_number,
-                bank: va_numbers.bank,
+                va_number: va_numbers[0].va_number,
+                bank: va_numbers[0].bank,
                 transaction_time,
                 transaction_status,
                 transaction_id,
@@ -36,8 +37,9 @@ module.exports = {
                 gross_amount,
                 fraud_status,
             }
-    
+
             const created = await Payment.storePayment(data)
+            await Transaction.updateStatus(order_id, transaction_status)
             const payload = {
                 user: {
                     id: created.insertId
