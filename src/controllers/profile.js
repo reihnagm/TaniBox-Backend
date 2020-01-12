@@ -29,7 +29,7 @@ module.exports = {
         try {
             const userId = request.body.user_id
             const checkRole = await Profile.checkRole(userId)
-            if (checkRole.length === 0) {
+            if (checkRole.length === 0 || checkRole === null) {
                 return misc.response(response, 400, false, 'User not found')
             }
             let requireCheck = []
@@ -294,6 +294,7 @@ module.exports = {
             }
 
             checkRole[0].role === 'buyer' ? await Profile.deleteBuyer(userId) : await Profile.deleteSeller(userId)
+            await Profile.deleteUser(userId)
             redisClient.flushdb()
             misc.response(response, 200, false, 'Success delete profile')
 
