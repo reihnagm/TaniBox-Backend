@@ -96,7 +96,7 @@ module.exports = {
     },
     getSingleProduct: (product_id) => {
         return new Promise((resolve, reject) => {
-            const query = `SELECT a.*, b.* FROM products a INNER JOIN photo_product b ON b.id = a.product_id WHERE id = '${product_id}'`
+            const query = `SELECT a.*, b.* FROM products a INNER JOIN photo_product b ON b.id = a.product_id WHERE a.id = '${product_id}'`
             connection.query(query, (error, result) => {
                 if(error) {
                     reject(new Error(error))
