@@ -1,6 +1,7 @@
 require('dotenv').config()
 
 const User = require('../models/User')
+const Profile = require('../models/Profile')
 const nodemailer  = require('nodemailer')
 const misc = require('../helper/misc')
 const bcrypt = require('bcryptjs')
@@ -82,6 +83,10 @@ module.exports = {
                 const data = { name, email, password:passwordHash, role }
 
                 const registered = await User.register(data)
+                const dataProfile = {
+                    user_id : registered.insertId,
+                }
+                await Profile.storeProfile(role, dataProfile)
 
                 const payload = {
                     user: {

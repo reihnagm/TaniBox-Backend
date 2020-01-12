@@ -29,7 +29,7 @@ module.exports = {
         try {
             const userId = request.body.user_id
             const checkRole = await Profile.checkRole(userId)
-            if (checkRole.length === 0) {
+            if (checkRole.length === 0 || checkRole === null) {
                 return misc.response(response, 400, false, 'User not found')
             }
             let requireCheck = []
