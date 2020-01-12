@@ -18,11 +18,11 @@ const upload = multer({
     storage
 })
 
-Route.get('/', redis.checkCache, Product.getAll)
-     .get('/show-product/:product_id', redis.checkCache, Product.getSingleProduct)
-     .get('/cart', redis.checkCache, Product.getCart)
-     .get('/:user_id/cart', redis.checkCache, Product.getSingleCart)
-     .get('/wishlist', redis.checkCache, Product.getWishlist)
+Route.get('/', Product.getAll)
+     .get('/show-product/:product_id', Product.getSingleProduct)
+     .get('/cart', Product.getCart)
+     .get('/:user_id/cart', Product.getSingleCart)
+     .get('/wishlist', Product.getWishlist)
      .post('/', jwtCheck.CheckToken, upload.single('photo'), Product.addProduct)
      .patch('/update', jwtCheck.CheckToken, upload.single('photo'), Product.updateProduct)
      .patch('/update-cart', jwtCheck.CheckToken, Product.updateCart)
