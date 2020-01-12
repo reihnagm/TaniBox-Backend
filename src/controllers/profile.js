@@ -15,9 +15,9 @@ module.exports = {
             }
             const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
 
-            if (profile.length === 0) {
-                throw new Error('Profile not found')
-            }
+            // if (profile.length === 0) {
+            //     throw new Error('Profile not found')
+            // }
             misc.response(response, 200, false, 'Successfull get single profile', profile, request.originalUrl)
         } catch(error) {
             console.error(error.message)
