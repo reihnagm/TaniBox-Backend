@@ -294,6 +294,7 @@ module.exports = {
             }
 
             checkRole[0].role === 'buyer' ? await Profile.deleteBuyer(userId) : await Profile.deleteSeller(userId)
+            await Profile.deleteUser(userId)
             redisClient.flushdb()
             misc.response(response, 200, false, 'Success delete profile')
 
