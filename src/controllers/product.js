@@ -43,7 +43,7 @@ module.exports = {
 
         try {
             const data = await Product.getSingleProduct(product_id)
-            misc.response(response, 200, false, 'Successfull get single product', data, request.originalUrl)
+            misc.response(response, 200, false, 'Successfull get single product', data[0], request.originalUrl)
 
         } catch(error) {
             console.error(error)
