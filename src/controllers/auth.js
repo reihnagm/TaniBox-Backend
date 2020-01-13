@@ -232,6 +232,7 @@ module.exports = {
 
             if(error === false) {
                 await User.updatePassword(passwordHash, email)
+                misc.response(response, 200, false, 'Successfull update password profile')
             }
 
 
