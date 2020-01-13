@@ -223,17 +223,15 @@ module.exports = {
             const db_password = await User.checkUser(email)
 
             const salt = await bcrypt.genSalt(10);
-            const passwordHash = await bcrypt.hash(old_password, salt)
+            const passwordHash = await bcrypt.hash(new_password, salt)
 
-            console.log(db_password[0].password)
-
-            if(passwordHash === db_password[0].password) {
+            if(old_password === db_password[0].password) {
                 error = true
                 throw new Error('Oops, Password cannot same with old password')
             }
 
             if(error === false) {
-                await User.updatePassword(new_password, email)
+                await User.updatePassword(passwordHash, email)
             }
 
 
