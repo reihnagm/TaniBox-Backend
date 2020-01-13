@@ -209,6 +209,35 @@ module.exports = {
         }
 
 
+    },
+    profileNewPassword: async (request, response) => {
+
+        let error = false
+
+        const email = request.body.email
+        const old_password = request.body.old_password
+        const new_password = request.body.new_password
+
+        try {
+
+            const db_password = await User.checkUser(email)
+
+            const passwordHash = await bcrypt.hash(old_password, salt)
+
+            if(passwordHash === db_password[0].password) {
+                misc.response(response, 500, true, 'Oops, Password cannot same with old password')
+                error true
+            }
+
+            if(error === false) {
+                await User.updatePassword(new_password, email)
+            }
+
+
+        } catch (error) {
+            misc.response(response, 500, true, `${error.message}`)
+        }
+
     }
 
 }

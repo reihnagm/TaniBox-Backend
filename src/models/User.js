@@ -36,7 +36,7 @@ module.exports = {
     },
     checkUser: (email) => {
         return new Promise((resolve, reject) => {
-            connection.query(`SELECT email, OTP FROM user WHERE email = '${email}'`, (error, result) => {
+            connection.query(`SELECT email, password, OTP FROM user WHERE email = '${email}'`, (error, result) => {
                 if (error) {
                     reject(new Error(error))
                 } else {
