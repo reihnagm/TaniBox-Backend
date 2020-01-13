@@ -285,7 +285,7 @@ module.exports = {
             misc.response(response, 200, false, 'Success delete profile')
 
         } catch(error) {
-            console.error(error.message)
+            console.log(error.message)
             misc.response(response, 500, true, 'Server error')
         }
     },
