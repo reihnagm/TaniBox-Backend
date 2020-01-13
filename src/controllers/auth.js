@@ -196,7 +196,7 @@ module.exports = {
             }
 
             if(error === false) {
-                const salt = await bcrypt.genSalt(10);
+                const salt = await bcrypt.genSalt(10)
                 const passwordHash = await bcrypt.hash(password, salt)
                 await User.updatePassword(passwordHash, email)
                 await User.updateOTPToNull(email)
@@ -222,6 +222,7 @@ module.exports = {
 
             const db_password = await User.checkUser(email)
 
+            const salt = await bcrypt.genSalt(10);
             const passwordHash = await bcrypt.hash(old_password, salt)
 
             if(passwordHash === db_password[0].password) {
