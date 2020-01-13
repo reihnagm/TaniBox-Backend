@@ -216,9 +216,7 @@ module.exports = {
                 !name_of_store ? requireCheck.push('name_of_store is required') : ''
                 !address ? requireCheck.push('address1 is required') : ''
                 !province ? requireCheck.push('province1 is required') : ''
-                !city ? requireCheck.push('city1 is required') : ''
                 !kecamatan ? requireCheck.push('kecamatan1 is required') : ''
-                !postal_code ? requireCheck.push('postal_code1 is required') : ''
                 !phone ? requireCheck.push('phone is required') : ''
 
                 if (requireCheck.length) {
