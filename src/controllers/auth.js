@@ -218,11 +218,13 @@ module.exports = {
         const old_password = request.body.old_password
         const new_password = request.body.new_password
 
-        console.log(email, old_password, new_password)
+
 
         try {
 
             const db_password = await User.checkUser(email)
+
+            console.log(typeof db_password[0].password)
 
             const salt = await bcrypt.genSalt(10);
             const passwordHash = await bcrypt.hash(new_password, salt)
