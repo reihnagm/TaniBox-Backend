@@ -224,7 +224,7 @@ module.exports = {
 
             const db_password = await User.checkUser(email)
 
-            console.log(old_password === db_password[0].password)
+            console.log(typeof old_password, typeof db_password[0].password)
 
             const salt = await bcrypt.genSalt(10);
             const passwordHash = await bcrypt.hash(new_password, salt)
