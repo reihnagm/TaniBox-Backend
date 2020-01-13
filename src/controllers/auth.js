@@ -226,7 +226,7 @@ module.exports = {
 
             if(passwordHash === db_password[0].password) {
                 misc.response(response, 500, true, 'Oops, Password cannot same with old password')
-                error true
+                error = true
             }
 
             if(error === false) {
