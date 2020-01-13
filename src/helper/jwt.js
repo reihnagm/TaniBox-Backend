@@ -11,7 +11,7 @@ module.exports = {
                 next()
             }
         } catch (err) {
-            return misc.response(response, 500, true, 'Invalid Token')
+            return misc.response(response, 501, true, 'Invalid Token')
         }
     },
 }
