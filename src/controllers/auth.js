@@ -226,8 +226,8 @@ module.exports = {
             const passwordHash = await bcrypt.hash(old_password, salt)
 
             if(passwordHash === db_password[0].password) {
-                misc.response(response, 500, true, 'Oops, Password cannot same with old password')
                 error = true
+                throw new Error('Oops, Password cannot same with old password')
             }
 
             if(error === false) {
