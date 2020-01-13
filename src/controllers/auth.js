@@ -224,11 +224,10 @@ module.exports = {
 
             const db_password = await User.checkUser(email)
 
-
             const salt = await bcrypt.genSalt(10);
             const passwordHash = await bcrypt.hash(new_password, salt)
 
-            const checkOldPassword = await bcrypt.compare(old_password, db_password[0].password)
+            const checkOldPassword = await bcrypt.compare(new_password, db_password[0].password)
 
             if(checkOldPassword === true) {
                 error = true
