@@ -11,6 +11,7 @@ module.exports = {
                 next()
             }
         } catch (err) {
+            console.log(err);
             return misc.response(response, 501, true, 'Invalid Token')
         }
     },
