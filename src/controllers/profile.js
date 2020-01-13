@@ -277,11 +277,7 @@ module.exports = {
                 return misc.response(response, 400, false, 'User not found')
             }
 
-            const profile = checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
-
-            if (profile.length === 0) {
-                return misc.response(response, 400, false, 'Profile not found')
-            }
+            checkRole[0].role === 'buyer' ? await Profile.detailBuyer(userId) : await Profile.detailSeller(userId)
 
             checkRole[0].role === 'buyer' ? await Profile.deleteBuyer(userId) : await Profile.deleteSeller(userId)
             await Profile.deleteUser(userId)
