@@ -225,7 +225,7 @@ module.exports = {
             const salt = await bcrypt.genSalt(10);
             const passwordHash = await bcrypt.hash(old_password, salt)
 
-            console.log(typeof passwordHash, typeof db_password)
+            console.log(db_password[0].password)
 
             if(passwordHash === db_password[0].password) {
                 error = true
