@@ -166,15 +166,15 @@ module.exports = {
                     address,
                     postal_code,
                     phone,
+                    postal_code1,
+                    city1,
                 } = request.body
 
                 !user_id ? requireCheck.push('user_id is required') : ''
                 !name ? requireCheck.push('name is required') : ''
                 !province ? requireCheck.push('province is required') : ''
-                !city ? requireCheck.push('city is required') : ''
                 !kecamatan ? requireCheck.push('kecamatan is required') : ''
                 !address ? requireCheck.push('address is required') : ''
-                !postal_code ? requireCheck.push('postal_code is required') : ''
                 !phone ? requireCheck.push('phone is required') : ''
 
                 if (requireCheck.length) {
@@ -182,15 +182,16 @@ module.exports = {
                 }
 
                 nameSend = name
-
+                const pc = postal_code ? postal_code : postal_code1
+                const ct = city ? city : city1
                 data = [
                     province,
                     province_name,
-                    city,
+                    ct,
                     city_name,
                     kecamatan,
                     address,
-                    postal_code,
+                    pc,
                     phone,
                     user_id,
                 ]
