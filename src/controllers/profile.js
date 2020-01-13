@@ -199,36 +199,24 @@ module.exports = {
                     user_id,
                     name_of_seller,
                     name_of_store,
-                    address1,
-                    province1,
-                    province1_name,
-                    city1,
-                    city1_name,
-                    kecamatan1,
-                    postal_code1,
-                    address2,
-                    province2,
-                    province2_name,
-                    city2,
-                    city2_name,
-                    kecamatan2,
-                    postal_code2,
+                    address,
+                    province,
+                    province_name,
+                    city,
+                    city_name,
+                    kecamatan,
+                    postal_code,
                     phone,
+                    city1,
+                    postal_code1,
                 } = request.body
 
                 !user_id ? requireCheck.push('user_id is required') : ''
                 !name_of_seller ? requireCheck.push('name_of_seller is required') : ''
                 !name_of_store ? requireCheck.push('name_of_store is required') : ''
-                !address1 ? requireCheck.push('address1 is required') : ''
-                !province1 ? requireCheck.push('province1 is required') : ''
-                !city1 ? requireCheck.push('city1 is required') : ''
-                !kecamatan1 ? requireCheck.push('kecamatan1 is required') : ''
-                !postal_code1 ? requireCheck.push('postal_code1 is required') : ''
-                !address2 ? requireCheck.push('address2 is required') : ''
-                !province2 ? requireCheck.push('province2 is required') : ''
-                !city2 ? requireCheck.push('city2 is required') : ''
-                !kecamatan2 ? requireCheck.push('kecamatan2 is required') : ''
-                !postal_code2 ? requireCheck.push('postal_code2 is required') : ''
+                !address ? requireCheck.push('address1 is required') : ''
+                !province ? requireCheck.push('province1 is required') : ''
+                !kecamatan ? requireCheck.push('kecamatan1 is required') : ''
                 !phone ? requireCheck.push('phone is required') : ''
 
                 if (requireCheck.length) {
@@ -236,23 +224,25 @@ module.exports = {
                 }
 
                 nameSend = name_of_seller
+                const pc = postal_code ? postal_code : postal_code1
+                const ct = city ? city : city1
 
                 data = [
                     name_of_store,
-                    address1,
-                    province1,
-                    province1_name,
-                    city1,
-                    city1_name,
-                    kecamatan1,
-                    postal_code1,
-                    address2,
-                    province2,
-                    province2_name,
-                    city2,
-                    city2_name,
-                    kecamatan2,
-                    postal_code2,
+                    address,
+                    province,
+                    province_name,
+                    ct,
+                    city_name,
+                    kecamatan,
+                    pc,
+                    address,
+                    province,
+                    province_name,
+                    ct,
+                    city_name,
+                    kecamatan,
+                    pc,
                     phone,
                     user_id,
                 ]
